@@ -51,8 +51,12 @@
 <br><br>
   
     <button type="submit"
+            class="btn btn-primary" (click)="generateReportforGraphQl(f)"
+            [disabled]="f.invalid" *ngIf="model.technology=='GraphQL'">Generate Report
+    </button>
+    <button type="submit"
             class="btn btn-primary" (click)="generateReport(f)"
-            [disabled]="f.invalid" *ngIf="model.technology!='Jar File'">Generate Report
+            [disabled]="f.invalid" *ngIf="model.technology!='Jar File' && model.technology!='GraphQL'">Generate Report
     </button>
     <button type="submit"
             class="btn btn-primary" (click)="generateReportIfJar(f)"

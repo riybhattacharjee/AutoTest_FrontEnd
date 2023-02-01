@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from 'src/api-service.service';
 
 // const ELEMENT_DATA: DataSource[] = [
@@ -47,11 +47,14 @@ import { ApiServiceService } from 'src/api-service.service';
 
 
 export class ResultsPageComponent implements OnInit {
+  dataSource: any;
 
-  constructor(private router: Router,private apiService: ApiServiceService) { }
+  constructor(private router: Router,private apiService: ApiServiceService,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
-
+    this.route.queryParams.subscribe(params => {
+      this.dataSource = params['dataSource'];
+    });
   }
   
   goBack(){
@@ -59,17 +62,12 @@ export class ResultsPageComponent implements OnInit {
   }
 
   loadResults(){
-    // this.apiService.viewResults().subscribe((data:any)=>{
-        
-    
-    //  });
-
-    
+     
   }
   
 
   displayedColumns: string[] = ['className', 'method', 'baseUrl', 'path','payloadJson','pathParam','requestParam',
   'responseTime','expectedStatus','responseStatus','passedOrFailed'];
   //dataSource = ELEMENT_DATA;
-  dataSource=data ;
+  //dataSource=data ;
 }

@@ -38,13 +38,21 @@ export class LandingPageComponent implements OnInit {
     this.generateReportClicked = true;
     console.log('generate btn is clicked');
     console.log(f.value['apiSpec']);
-    //  this.apiService.getResults(f.value['apiSpec']).subscribe((data:any)=>{
-    //     console.log("data",data);
-    //     this.articles = data['articles'];
-    //  this.router.navigate(['app-results-page']);
-    //  });
+     this.apiService.getResults(f.value['apiSpec']).subscribe((data:any)=>{
+        console.log("data",data);
+        this.articles = data;
+        this.router.navigate(['app-results-page',{dataSource: this.articles}]);
+     });
 
-    this.router.navigate(['app-results-page']);
+    // this.router.navigate(['app-results-page',{dataSource: this.articles}]);
+  }
+
+  generateReportforGraphQl(f: NgForm){
+    this.apiService.getResultsforGraphQl(f.value['apiSpec']).subscribe((data:any)=>{
+      console.log("data",data);
+      this.articles = data;
+      this.router.navigate(['app-results-page',{dataSource: this.articles}]);
+       });
   }
 
   generateReportIfJar(f: NgForm) {
@@ -87,4 +95,6 @@ export class LandingPageComponent implements OnInit {
 
     }
   }
+
+  
 }
