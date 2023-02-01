@@ -1,0 +1,67 @@
+
+<div class="container" style="margin-top: 70px;">
+  <form  novalidate
+        (ngSubmit)="onSubmit(f)"
+        #f="ngForm">
+  
+        <div class="form-group">
+          <label class="heading">Select a Source</label>
+          <select class="form-control"
+                  name="technology"
+                  [(ngModel)]="model.technology" required>
+            <option value="">Please select a source</option>
+            <option *ngFor="let tech of techs"
+                    [value]="tech">{{tech}}
+            </option>
+          </select>
+        </div>
+        <br>
+      <div class="form-group"
+           [ngClass]="{
+          'has-danger': apiSpec.invalid && (apiSpec.dirty || apiSpec.touched),
+          'has-success': apiSpec.valid && (apiSpec.dirty || apiSpec.touched)
+     }">
+        <label class="heading">Enter the URL</label>
+        <input type="text"
+               class="form-control"
+               name="apiSpec"
+               [(ngModel)]="model.apiSpec"
+               required
+               #apiSpec="ngModel">
+        <div class="form-control-feedback"
+             *ngIf="apiSpec.errors && (apiSpec.dirty || apiSpec.touched)">
+         
+        </div>
+      </div>
+  
+  <br>
+  
+   <input type="file" class="file-input" name="upload_file" 
+   (change)="onFileSelected($event)" #fileUpload required *ngIf="model.technology=='Jar File'">
+        <!-- (change)="onFileSelected($event)" -->
+<!-- <div class="file-upload">
+
+   {{fileName || "No file uploaded yet."}}
+
+    <button mat-mini-fab color="primary" class="upload-btn"
+      (click)="fileUpload.click()">
+        <mat-icon>attach_file</mat-icon>
+    </button>
+</div> -->
+<br><br>
+  
+    <button type="submit"
+            class="btn btn-primary" (click)="generateReport(f)"
+            [disabled]="f.invalid" *ngIf="model.technology!='Jar File'">Generate Report
+    </button>
+    <button type="submit"
+            class="btn btn-primary" (click)="generateReportIfJar(f)"
+            [disabled]="f.invalid" *ngIf="model.technology=='Jar File'">Generate Report
+    </button>
+  
+  
+  </form> 
+
+
+  <router-outlet></router-outlet>
+  </div> 

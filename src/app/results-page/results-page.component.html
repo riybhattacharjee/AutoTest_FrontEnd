@@ -1,0 +1,72 @@
+<div class="table-responsive">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style=" margin-top: 100px;">
+
+    
+    <ng-container matColumnDef="className">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Class Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.className}} </td>
+    </ng-container>
+  
+   
+    <ng-container matColumnDef="method">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Method </th>
+      <td mat-cell *matCellDef="let element"> {{element.method}} </td>
+    </ng-container>
+  
+    
+    <ng-container matColumnDef="baseUrl">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Base URL </th>
+      <td mat-cell *matCellDef="let element"> {{element.baseUrl}} </td>
+    </ng-container>
+  
+    
+
+    <ng-container matColumnDef="path">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Path </th>
+      <td mat-cell *matCellDef="let element"> {{element.path}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="payloadJson">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Payload </th>
+      <td mat-cell *matCellDef="let element"> {{element.payloadJson}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pathParam">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Path Param </th>
+      <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.pathParam}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="requestParam">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Request Param </th>
+      <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.requestParam}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="responseTime">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Response Time (ms) </th>
+      <td mat-cell *matCellDef="let element"> {{element.responseTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expectedStatus">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Expected Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.expectedStatus}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="responseStatus">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Response Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.responseStatus}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="passedOrFailed">
+      <th mat-header-cell *matHeaderCellDef id="heading"> Passed/Failed </th>
+      <td mat-cell *matCellDef="let element"> {{element.passedOrFailed}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+  <br>
+  <button 
+  class="btn btn-primary" (click)="goBack()" style="margin-left: 10px; width: auto;"
+  >Back
+</button>
