@@ -10,6 +10,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { DataSource } from '../results-page/results-page.component';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-landing-page',
@@ -25,6 +27,8 @@ export class LandingPageComponent implements OnInit {
   generateReportClicked: boolean = false;
   file: File |undefined;
   
+ 
+  
   // fileUpload = require('express-fileupload');
   constructor(
     private router: Router,
@@ -32,17 +36,22 @@ export class LandingPageComponent implements OnInit {
     private http: HttpClient
   ) {}
 
+  states !: Observable<object>;
   ngOnInit(): void {}
 
   generateReport(f: NgForm) {
     this.generateReportClicked = true;
     console.log('generate btn is clicked');
     console.log(f.value['apiSpec']);
-     this.apiService.getResults(f.value['apiSpec']).subscribe((data:any)=>{
+    localStorage.setItem("apiSpec", f.value['apiSpec'])
+    this.router.navigateByUrl('app-results-page');
+    /* this.apiService.getResults(f.value['apiSpec']).subscribe((data)=>{
         console.log("data",data);
         this.articles = data;
-        this.router.navigate(['app-results-page',{dataSource: this.articles}]);
-     });
+        localStorage.setItem("dataSource", this.articles)
+        this.router.navigateByUrl('app-results-page',{ state: { request: this.articles } });
+       // this.router.navigate(['app-results-page',{dataSource: this.articles}]);
+     });*/
 
     // this.router.navigate(['app-results-page',{dataSource: this.articles}]);
   }

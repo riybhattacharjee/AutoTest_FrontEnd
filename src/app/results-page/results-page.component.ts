@@ -10,7 +10,7 @@ import { ApiServiceService } from 'src/api-service.service';
 //   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/',path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
 //   ];
 
-  const data:DataSource[]=[
+  /*const data:DataSource[]=[
     {
       "className": "com.hashedin.broadcast.autotest.GenericTest",
       "method": "POST",
@@ -23,7 +23,7 @@ import { ApiServiceService } from 'src/api-service.service';
       "expectedStatus": "200",
       "responseStatus": "200",
       "passedOrFailed": "Passed"
-    }]
+    }]*/
   
   export interface DataSource {
   className: string;
@@ -47,13 +47,19 @@ import { ApiServiceService } from 'src/api-service.service';
 
 
 export class ResultsPageComponent implements OnInit {
-  dataSource: any;
+  dataSource:any;
 
   constructor(private router: Router,private apiService: ApiServiceService,private route:ActivatedRoute) { }
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.dataSource = params['dataSource'];
+  ngOnInit(): void { 
+    //console.log(this.router)
+  //  this.dataSource = localStorage.getItem("dataSource");
+   this.route.queryParams.subscribe(params => {
+      console.log(localStorage.getItem('apiSpec'))
+      this.apiService.getResults(localStorage.getItem('apiSpec')).subscribe((data)=>{
+        console.log("data",data);
+        this.dataSource = data;
+     });
     });
   }
   
