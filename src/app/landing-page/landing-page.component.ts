@@ -9,7 +9,7 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { DataSource } from '../results-page/results-page.component';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -25,19 +25,23 @@ export class LandingPageComponent implements OnInit {
   upload_file:File | undefined;
   fileName = '';
   generateReportClicked: boolean = false;
-  file: File |undefined;
-  
- 
+  selectedFiles?: FileList;
+  currentFile?: File;
+  progress = 0;
+  message = '';
+  fileInfos?: Observable<any>;
   
   // fileUpload = require('express-fileupload');
   constructor(
     private router: Router,
     private apiService: ApiServiceService,
-    private http: HttpClient
+    
   ) {}
 
   states !: Observable<object>;
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fileInfos = this.apiService.getFiles();
+  }
 
   generateReport(f: NgForm) {
     this.generateReportClicked = true;
@@ -65,13 +69,13 @@ export class LandingPageComponent implements OnInit {
        });
   }
 
-  generateReportIfJar(f: NgForm) {
-    console.log("generateReportIfJar",this.file)
+  // generateReportIfJar(f: NgForm) {
+  //   // console.log("generateReportIfJar",this.file)
     
-    this.apiService.sendFile(this.file).subscribe((data: any) => {
-      //this.router.navigate(['app-results-page']);
-    });
-  }
+  //   // this.apiService.sendFile(this.file).subscribe((data: any) => {
+  //   //   //this.router.navigate(['app-results-page']);
+  //   // });
+  // }
 
   //new code trial
   model: Model = new Model('', '');
@@ -87,24 +91,65 @@ export class LandingPageComponent implements OnInit {
     }
   }
 
+  // onFileSelected(event: any) {
+  //   console.log(event)
+  //   const file:File = event.target.files[0];
+
+  //   if (file) {
+  //     this.fileName = file.name;
+      
+  //     //localStorage.setItem(this.uploadFile,file)
+  //     const formData = new FormData();
+
+  //     formData.append('file', file);
+  //     console.log(formData);
+  // //     // const upload$ = this.http.post("/api/thumbnail-upload", formData);
+
+  // //     // upload$.subscribe();
+
+  //   }
+  // }
+
   onFileSelected(event: any) {
-    console.log(event)
-     this.file = event.target.files[0];
-
-    if (this.file) {
-      this.fileName = this.file.name;
-      console.log(this.file);
-      //localStorage.setItem(this.uploadFile,file)
-      // const formData = new FormData();
-
-      // formData.append("thumbnail", file);
-
-      // const upload$ = this.http.post("/api/thumbnail-upload", formData);
-
-      // upload$.subscribe();
-
-    }
+    this.selectedFiles = event.target.files;
   }
 
+
+  generateReportIfJar(f: NgForm): void {
+    this.progress = 0;
+
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedFiles.item(0);
+
+      if (file) {
+        this.currentFile = file;
+
+        this.apiService.upload(this.currentFile).subscribe({
+          next: (event: any) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              this.progress = Math.round(100 * event.loaded / event.total);
+            } else if (event instanceof HttpResponse) {
+              this.message = event.body.message;
+              this.fileInfos = this.apiService.getFiles();
+            }
+          },
+          error: (err: any) => {
+            console.log(err);
+            this.progress = 0;
+
+            if (err.error && err.error.message) {
+              this.message = err.error.message;
+            } else {
+              this.message = 'Could not upload the file!';
+            }
+
+            this.currentFile = undefined;
+          }
+        });
+      }
+
+      this.selectedFiles = undefined;
+    }
+  }
   
 }

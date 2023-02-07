@@ -1,12 +1,13 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiServiceService {
   API_KEY = 'YOUR_API_KEY';
-
+  private baseUrl = 'http://localhost:8095';
   constructor(private httpClient: HttpClient) {}
 
   public getResults(api: any) {
@@ -31,5 +32,20 @@ export class ApiServiceService {
     //return file;
   }
 
-  
+  upload(file: File): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+
+    const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.httpClient.request(req);
+  }
+
+  getFiles(): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}/files`);
+  }
 }
