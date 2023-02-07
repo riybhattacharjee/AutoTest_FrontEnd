@@ -132,6 +132,8 @@ export class LandingPageComponent implements OnInit {
             } else if (event instanceof HttpResponse) {
               this.message = event.body.message;
               //this.fileInfos = this.apiService.getFiles();
+              this.articles = event;
+              this.router.navigate(['app-results-page',{dataSource: this.articles}])
             }
           },
           error: (err: any) => {

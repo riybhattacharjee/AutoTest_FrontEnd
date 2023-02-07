@@ -4,54 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from 'src/api-service.service';
 import { NgxSpinnerService } from "ngx-spinner";
 
-// const ELEMENT_DATA: DataSource[] = [
-//   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/', path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
-//   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/',path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
-//   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/',path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
-//   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/',path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
-//   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/',path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
-//   ];
 
-  // const data:DataSource[]=[
-  //   {
-  //     "className": "com.hashedin.broadcast.autotest.GenericTest",
-  //     "method": "POST",
-  //     "baseUrl": "http://localhost:8095",
-  //     "path": "/user/createUser",
-  //     "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
-  //     "pathParam": "{}",
-  //     "requestParam": "{}",
-  //     "responseTime": "317",
-  //     "expectedStatus": "200",
-  //     "responseStatus": "200",
-  //     "passedOrFailed": "Passed"
-  //   },
-  //   {
-  //     "className": "com.hashedin.broadcast.autotest.GenericTest",
-  //     "method": "POST",
-  //     "baseUrl": "http://localhost:8095",
-  //     "path": "/user/createUser",
-  //     "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
-  //     "pathParam": "{}",
-  //     "requestParam": "{}",
-  //     "responseTime": "317",
-  //     "expectedStatus": "200",
-  //     "responseStatus": "200",
-  //     "passedOrFailed": "Passed"
-  //   },
-  //   {
-  //     "className": "com.hashedin.broadcast.autotest.GenericTest",
-  //     "method": "POST",
-  //     "baseUrl": "http://localhost:8095",
-  //     "path": "/user/createUser",
-  //     "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
-  //     "pathParam": "{}",
-  //     "requestParam": "{}",
-  //     "responseTime": "317",
-  //     "expectedStatus": "200",
-  //     "responseStatus": "200",
-  //     "passedOrFailed": "Passed"
-  //   }]
   
   export interface DataSource {
   className: string;
@@ -65,7 +18,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   passedOrFailed:string;
   pathParam:string;
   requestParam:string;
-
+  exceptionMessage:string;
 }
 @Component({
   selector: 'app-results-page',
@@ -110,12 +63,5 @@ export class ResultsPageComponent implements OnInit {
   }
 
   displayedColumns: string[] = ['className', 'method', 'baseUrl', 'path','payloadJson','pathParam','requestParam',
-  'responseTime','expectedStatus','responseStatus','passedOrFailed'];
+  'responseTime','expectedStatus','responseStatus','passedOrFailed','exceptionMessage'];
 }
-// function hideloader() {
-  
-//   // Setting display of spinner
-//   // element to none
-//   document.getElementById('loading')
-//       .style.display = 'none';
-// }
