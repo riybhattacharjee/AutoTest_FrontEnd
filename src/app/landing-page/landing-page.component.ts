@@ -30,7 +30,7 @@ export class LandingPageComponent implements OnInit {
   progress = 0;
   message = '';
   fileInfos?: Observable<any>;
-  
+  baseUrl:string='';
   // fileUpload = require('express-fileupload');
   constructor(
     private router: Router,
@@ -40,7 +40,7 @@ export class LandingPageComponent implements OnInit {
 
   states !: Observable<object>;
   ngOnInit(): void {
-    this.fileInfos = this.apiService.getFiles();
+    //this.fileInfos = this.apiService.getFiles();
   }
 
   generateReport(f: NgForm) {
@@ -117,20 +117,21 @@ export class LandingPageComponent implements OnInit {
 
   generateReportIfJar(f: NgForm): void {
     this.progress = 0;
-
+    this.baseUrl=f.value['apiSpec'];
+    console.log(this.baseUrl)
     if (this.selectedFiles) {
       const file: File | null = this.selectedFiles.item(0);
 
       if (file) {
         this.currentFile = file;
 
-        this.apiService.upload(this.currentFile).subscribe({
+        this.apiService.upload(this.currentFile,this.baseUrl).subscribe({
           next: (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
               this.progress = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
               this.message = event.body.message;
-              this.fileInfos = this.apiService.getFiles();
+              //this.fileInfos = this.apiService.getFiles();
             }
           },
           error: (err: any) => {

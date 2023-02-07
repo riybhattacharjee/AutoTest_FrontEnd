@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiServiceService {
   API_KEY = 'YOUR_API_KEY';
-  private baseUrl = 'http://localhost:8095';
+ // private baseUrl = 'http://localhost:8095';
   constructor(private httpClient: HttpClient) {}
 
   public getResults(api: any) {
@@ -32,12 +32,12 @@ export class ApiServiceService {
     //return file;
   }
 
-  upload(file: File): Observable<HttpEvent<any>> {
+  upload(file: File,baseUrl:string): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
     formData.append('file', file);
 
-    const req = new HttpRequest('POST', `${this.baseUrl}/upload`, formData, {
+    const req = new HttpRequest('POST', `${baseUrl}/uploadFile`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -45,7 +45,7 @@ export class ApiServiceService {
     return this.httpClient.request(req);
   }
 
-  getFiles(): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/files`);
-  }
+  // getFiles(): Observable<any> {
+  //   return this.httpClient.get(`${this.baseUrl}/files`);
+  // }
 }
