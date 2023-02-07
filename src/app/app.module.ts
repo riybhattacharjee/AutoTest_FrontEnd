@@ -10,8 +10,9 @@ import { FormsModule } from '@angular/forms';
 //import * as angularMat from '@angular/material';
 import { AllMaterials } from './all-materials';
 import { HttpClientModule } from '@angular/common/http';
-
-
+//import { NgHttpLoaderModule } from 'ng-http-loader';
+// import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from "ngx-spinner";
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,8 +25,9 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FormsModule,
     AllMaterials,
-    HttpClientModule
-    
+    HttpClientModule,
+   NgxSpinnerModule ,
+  // NgHttpLoaderModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

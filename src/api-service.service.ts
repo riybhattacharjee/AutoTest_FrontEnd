@@ -10,12 +10,8 @@ export class ApiServiceService {
   constructor(private httpClient: HttpClient) {}
 
   public getResults(api: any) {
-    console.log( `http://localhost:8082/openApi/java/url?apiUrl=`+api)
-    //   let params = new HttpParams();
-    //   params = params.append('apiUrl', api);
-    //  return this.httpClient.get(`https://cb0d-115-99-130-93.in.ngrok.io/openApi/url`,{params});
     return this.httpClient.get(
-      `http://localhost:8082/openApi/java/url?apiUrl=`+api);
+      `https://3b2d-2401-4900-1cbc-9230-72-ddc9-21fb-cb9c.in.ngrok.io/openApi/java/url?apiUrl=`+api);
   }
 
   public getResultsforGraphQl(api:any){

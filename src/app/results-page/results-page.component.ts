@@ -1,6 +1,8 @@
+import { NONE_TYPE } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from 'src/api-service.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 // const ELEMENT_DATA: DataSource[] = [
 //   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/', path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
@@ -10,20 +12,46 @@ import { ApiServiceService } from 'src/api-service.service';
 //   {class: 'org.testng.test.GenericTest', method: 'POST', baseURL: 'http://localhost:9010/',path: '/newUser',payload:'{"firstName":"Harii","lastName":"K","password":"password","role":"ADMIN","userName":"HariiK","userId":"usr3"}',pathParam:'{}',requestParam:'{}',responseTime:'5106',expectedStatus:'200',responseStatus:'200',passOrFail:'Passed'},
 //   ];
 
-  /*const data:DataSource[]=[
-    {
-      "className": "com.hashedin.broadcast.autotest.GenericTest",
-      "method": "POST",
-      "baseUrl": "http://localhost:8095",
-      "path": "/user/createUser",
-      "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
-      "pathParam": "{}",
-      "requestParam": "{}",
-      "responseTime": "317",
-      "expectedStatus": "200",
-      "responseStatus": "200",
-      "passedOrFailed": "Passed"
-    }]*/
+  // const data:DataSource[]=[
+  //   {
+  //     "className": "com.hashedin.broadcast.autotest.GenericTest",
+  //     "method": "POST",
+  //     "baseUrl": "http://localhost:8095",
+  //     "path": "/user/createUser",
+  //     "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
+  //     "pathParam": "{}",
+  //     "requestParam": "{}",
+  //     "responseTime": "317",
+  //     "expectedStatus": "200",
+  //     "responseStatus": "200",
+  //     "passedOrFailed": "Passed"
+  //   },
+  //   {
+  //     "className": "com.hashedin.broadcast.autotest.GenericTest",
+  //     "method": "POST",
+  //     "baseUrl": "http://localhost:8095",
+  //     "path": "/user/createUser",
+  //     "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
+  //     "pathParam": "{}",
+  //     "requestParam": "{}",
+  //     "responseTime": "317",
+  //     "expectedStatus": "200",
+  //     "responseStatus": "200",
+  //     "passedOrFailed": "Passed"
+  //   },
+  //   {
+  //     "className": "com.hashedin.broadcast.autotest.GenericTest",
+  //     "method": "POST",
+  //     "baseUrl": "http://localhost:8095",
+  //     "path": "/user/createUser",
+  //     "payloadJson": "{firstName=vT3wx, lastName=KPX4W, emailID=Og2pS, userID=558}",
+  //     "pathParam": "{}",
+  //     "requestParam": "{}",
+  //     "responseTime": "317",
+  //     "expectedStatus": "200",
+  //     "responseStatus": "200",
+  //     "passedOrFailed": "Passed"
+  //   }]
   
   export interface DataSource {
   className: string;
@@ -48,18 +76,32 @@ import { ApiServiceService } from 'src/api-service.service';
 
 export class ResultsPageComponent implements OnInit {
   dataSource:any;
-
-  constructor(private router: Router,private apiService: ApiServiceService,private route:ActivatedRoute) { }
+  
+  constructor(private router: Router,private apiService: ApiServiceService,private route:ActivatedRoute,private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void { 
-    //console.log(this.router)
-  //  this.dataSource = localStorage.getItem("dataSource");
+    this.spinner.show(); 
    this.route.queryParams.subscribe(params => {
-      console.log(localStorage.getItem('apiSpec'))
+      console.log(localStorage.getItem('apiSpec'),localStorage.getItem('tech'))
+      if(localStorage.getItem('tech')==='Open Spec API'){
       this.apiService.getResults(localStorage.getItem('apiSpec')).subscribe((data)=>{
         console.log("data",data);
         this.dataSource = data;
-     });
+        this.spinner.hide();
+    });
+    }
+    else{
+     // this.SpinnerService.show(); 
+      if(localStorage.getItem('tech')==='GraphQL'){
+       this.apiService.getResultsforGraphQl(localStorage.getItem('apiSpec')).subscribe((data)=>{
+          console.log("data",data);
+         // this.SpinnerService.hide();
+          this.dataSource = data;
+          this.spinner.hide();
+      });
+      }
+      
+    }
     });
   }
   
@@ -67,13 +109,13 @@ export class ResultsPageComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  loadResults(){
-     
-  }
-  
-
   displayedColumns: string[] = ['className', 'method', 'baseUrl', 'path','payloadJson','pathParam','requestParam',
   'responseTime','expectedStatus','responseStatus','passedOrFailed'];
-  //dataSource = ELEMENT_DATA;
-  //dataSource=data ;
 }
+// function hideloader() {
+  
+//   // Setting display of spinner
+//   // element to none
+//   document.getElementById('loading')
+//       .style.display = 'none';
+// }

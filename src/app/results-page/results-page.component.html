@@ -1,5 +1,17 @@
+<ngx-spinner
+  bdColor="rgb(210, 180, 140)"
+  template="<img src='https://media.giphy.com/media/o8igknyuKs6aY/giphy.gif' />"
+>
+<p style="font-size: 100px; color: white">Loading...</p>
+</ngx-spinner>
+
+<button 
+  class="btn btn-primary" (click)="goBack()" style="margin-left: 10px; width: auto; margin-top: 14px;"
+  >Go Back
+</button>
+
 <div class="table-responsive">
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style=" margin-top: 100px;">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style=" margin-top: 40px;">
 
     
     <ng-container matColumnDef="className">
@@ -68,5 +80,9 @@
   <br>
   <button 
   class="btn btn-primary" (click)="goBack()" style="margin-left: 10px; width: auto;"
-  >Back
+  >Go Back
 </button>
+<!-- <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
+  <p style="color: white">Please Wait. </p>  
+  </ngx-spinner>  -->
+ 

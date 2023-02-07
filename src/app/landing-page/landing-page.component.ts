@@ -44,6 +44,7 @@ export class LandingPageComponent implements OnInit {
     console.log('generate btn is clicked');
     console.log(f.value['apiSpec']);
     localStorage.setItem("apiSpec", f.value['apiSpec'])
+    localStorage.setItem("tech",f.value['technology'])
     this.router.navigateByUrl('app-results-page');
     /* this.apiService.getResults(f.value['apiSpec']).subscribe((data)=>{
         console.log("data",data);

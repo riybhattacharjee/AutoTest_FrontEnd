@@ -1,11 +1,12 @@
 
-<div class="container" style="margin-top: 70px;">
+<div class="container" style="margin-top: 70px; background-color: tan;">
+        <label class="Mainheading" style="margin-top: 25px;">Auto Test</label><br><br>
   <form  novalidate
         (ngSubmit)="onSubmit(f)"
         #f="ngForm">
   
         <div class="form-group">
-          <label class="heading">Select a Source</label>
+          <label class="heading" style="margin-top: 11px;">Select a Source</label>
           <select class="form-control"
                   name="technology"
                   [(ngModel)]="model.technology" required>
@@ -21,7 +22,8 @@
           'has-danger': apiSpec.invalid && (apiSpec.dirty || apiSpec.touched),
           'has-success': apiSpec.valid && (apiSpec.dirty || apiSpec.touched)
      }">
-        <label class="heading">Enter the URL</label>
+        <label class="heading" *ngIf="model.technology!='Jar File'">Enter the URL</label>
+        <label class="heading" *ngIf="model.technology=='Jar File'">Enter the Base URL</label>
         <input type="text"
                class="form-control"
                name="apiSpec"
@@ -36,8 +38,13 @@
   
   <br>
   
+  <label class="heading" *ngIf="model.technology=='Jar File'">Jar File</label> &nbsp;&nbsp;
    <input type="file" class="file-input" name="upload_file" 
    (change)="onFileSelected($event)" #fileUpload required *ngIf="model.technology=='Jar File'">
+   <br *ngIf="model.technology=='Jar File'"><br *ngIf="model.technology=='Jar File'">
+   <label class="heading">Api Excel File</label> &nbsp;&nbsp;
+   <input type="file" class="file-input" name="upload_file" 
+   (change)="onFileSelected($event)" #fileUpload required>
         <!-- (change)="onFileSelected($event)" -->
 <!-- <div class="file-upload">
 
@@ -52,20 +59,18 @@
   
     <button type="submit"
             class="btn btn-primary" (click)="generateReportforGraphQl(f)"
-            [disabled]="f.invalid" *ngIf="model.technology=='GraphQL'">Generate Report
+            [disabled]="f.invalid" *ngIf="model.technology=='GraphQL'" style="margin-bottom: 15px;">Generate Report
     </button>
     <button type="submit"
             class="btn btn-primary" (click)="generateReport(f)"
-            [disabled]="f.invalid" *ngIf="model.technology!='Jar File' && model.technology!='GraphQL'">Generate Report
+            [disabled]="f.invalid" *ngIf="model.technology!='Jar File' && model.technology!='GraphQL'" style="margin-bottom: 15px;">Generate Report
     </button>
     <button type="submit"
             class="btn btn-primary" (click)="generateReportIfJar(f)"
-            [disabled]="f.invalid" *ngIf="model.technology=='Jar File'">Generate Report
+            [disabled]="f.invalid" *ngIf="model.technology=='Jar File'" style="margin-bottom: 15px;">Generate Report
     </button>
   
   
   </form> 
-
-
-  <router-outlet></router-outlet>
+ <router-outlet></router-outlet>
   </div> 
