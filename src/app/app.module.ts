@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 //import { NgHttpLoaderModule } from 'ng-http-loader';
 // import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerModule } from "ngx-spinner";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +28,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     AllMaterials,
     HttpClientModule,
    NgxSpinnerModule ,
+   BrowserAnimationsModule
   // NgHttpLoaderModule.forRoot(),
   ],
   providers: [],

@@ -1,5 +1,14 @@
-
-<div class="container" style="margin-top: 70px; background-color: tan;">
+<ngx-spinner
+bdColor="rgb(255,235,205)" type="ball-scale-multiple"
+  
+>
+<!-- template="<img src='https://media.giphy.com/media/uCDT9P4pDdpgPDrdAg/giphy.gif'/>" -->
+<!-- https://media.giphy.com/media/o8igknyuKs6aY/giphy.gif -->
+<!-- https://media.giphy.com/media/2c85mEsTFONgM0sOQ/giphy.gif bdColor="rgb(210, 180, 140)" -->
+<br><br><br>
+<p style="font-size: 100px; color: black">Loading..</p>
+</ngx-spinner>
+<div class="container" style="margin-top: 70px; background-color: blanchedalmond;">
         <label class="Mainheading" style="margin-top: 25px;">Auto Test</label><br><br>
   <form  novalidate
         (ngSubmit)="onSubmit(f)"
@@ -39,26 +48,18 @@
   <br>
   
   <label class="heading" *ngIf="model.technology=='Jar File'">Jar File</label> &nbsp;&nbsp;
-   <input type="file" class="file-input" name="upload_file" 
+   <input type="file" class="file-input" name="upload_file" accept=".jar"
    (change)="onFileSelected($event)" #fileUpload required *ngIf="model.technology=='Jar File'">
+
    <br *ngIf="model.technology=='Jar File'"><br *ngIf="model.technology=='Jar File'">
+
    <label class="heading">Api Excel File</label> &nbsp;&nbsp;
-   <input type="file" class="file-input" name="upload_file" 
-   (change)="onFileSelected($event)" #fileUpload required>
-        <!-- (change)="onFileSelected($event)" -->
-<!-- <div class="file-upload">
-
-   {{fileName || "No file uploaded yet."}}
-
-    <button mat-mini-fab color="primary" class="upload-btn"
-      (click)="fileUpload.click()">
-        <mat-icon>attach_file</mat-icon>
-    </button>
-</div> -->
+   <input type="file" class="file-input" name="upload_file" accept=".xls,.xlsx"
+   (change)="onExcelFileSelected($event)" #fileUpload required>
 <br><br>
   
     <button type="submit"
-            class="btn btn-primary" (click)="generateReportforGraphQl(f)"
+            class="btn btn-primary" (click)="generateReport(f)"
             [disabled]="f.invalid" *ngIf="model.technology=='GraphQL'" style="margin-bottom: 15px;">Generate Report
     </button>
     <button type="submit"
