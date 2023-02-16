@@ -56,23 +56,6 @@ export class LandingPageComponent implements OnInit {
     //this.fileInfos = this.apiService.getFiles();
   }
 
-  // generateReport(f: NgForm) {
-  //   this.generateReportClicked = true;
-  //   console.log('generate btn is clicked');
-  //   console.log(f.value['apiSpec']);
-  //   localStorage.setItem("apiSpec", f.value['apiSpec'])
-  //   localStorage.setItem("tech",f.value['technology'])
-  //   this.router.navigate(['app-results-page']);
-  // }
-
-  // generateReportforGraphQl(f: NgForm){
-  //   this.apiService.getResultsforGraphQl(f.value['apiSpec']).subscribe((data:any)=>{
-  //     console.log("data",data);
-  //     this.articles = data;
-  //     this.router.navigate(['app-results-page',{dataSource: this.articles}]);
-  //      });
-  // }
-
 
   //new code trial
   model: Model = new Model('', '');
@@ -147,25 +130,7 @@ export class LandingPageComponent implements OnInit {
 
       this.selectedFiles = undefined;
     }
-    // else{
-    //   this.spinner.show();
-    //   console.log("in else")
-    //  this.apiService.getResultswithoutFile(this.baseUrl).subscribe((event: any) => {
-    //   console.log(event)
-    //    this.articles = event.body;
-    //    console.log(this.articles)
-    //    this.router.navigate(['app-results-page']);
-           
-    //   this.apiService.passDatatoResultsPage(this.articles);
-    //   this.spinner.hide();
-    //  }
-
-    //  );
-    // }
-
-
-
-    else{
+        else{
       this.spinner.show();
       console.log("in else")
      this.apiService.getResultswithoutFile(this.baseUrl).subscribe({

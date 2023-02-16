@@ -1,15 +1,15 @@
 import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LandingPageComponent } from './app/landing-page/landing-page.component';
-import { ResultsPageComponent } from './app/results-page/results-page.component';
 import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
 export class ApiServiceService {
   url:string|undefined;
+  jsonResponseList:Array<any> | undefined;
   name: any=null;
+  ngrokUrl='https://7a47-2401-4900-1f24-5a8b-a0fd-b633-867e-456a.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
@@ -18,11 +18,11 @@ export class ApiServiceService {
   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> {
     console.log("called")
     if(localStorage.getItem("technology")=='Open Spec API'){
- this.url =`https://777c-2401-4900-1cbc-58fa-31ee-c1bd-1184-2589.in.ngrok.io/openApi/java/urlWithFile?apiUrl=`;
+ this.url =this.ngrokUrl+`/openApi/java/urlWithFile?apiUrl=`;
     }
     else{
       if(localStorage.getItem("technology")=='GraphQL'){
-        this.url =`https://777c-2401-4900-1cbc-58fa-31ee-c1bd-1184-2589.in.ngrok.io/graphql/apiTest=`;
+        this.url =this.ngrokUrl+`/graphql/apiTest=`;
       }
     }
 
@@ -41,17 +41,17 @@ export class ApiServiceService {
   getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> {
     console.log("called")
     if(localStorage.getItem("technology")=='Open Spec API'){
- this.url =`https://777c-2401-4900-1cbc-58fa-31ee-c1bd-1184-2589.in.ngrok.io/openApi/java/urlWithFile?apiUrl=`;
+ this.url =this.ngrokUrl+`/openApi/java/urlWithFile?apiUrl=`;
     }
     else{
       if(localStorage.getItem("technology")=='GraphQL'){
-        this.url =`https://777c-2401-4900-1cbc-58fa-31ee-c1bd-1184-2589.in.ngrok.io/graphql/apiTest=`;
+        this.url =this.ngrokUrl+`/graphql/apiTest=`;
       }
     }
 
     const formData: FormData = new FormData();
     formData.append('baseUrl',baseUrl);
-     const req = new HttpRequest('POST',  'https://777c-2401-4900-1cbc-58fa-31ee-c1bd-1184-2589.in.ngrok.io/graphql/apiTest', formData, {
+     const req = new HttpRequest('POST',  this.ngrokUrl+'/graphql/apiTest', formData, {
       reportProgress: true,
       responseType: 'json'
     }); 
@@ -67,31 +67,10 @@ export class ApiServiceService {
 
   public getResultsforGraphQl(api:any){
     return this.httpClient.get(
-      `http://localhost:8082/graphql/apiTest?baseUrl=`,api);
+      this.ngrokUrl+`/graphql/apiTest?baseUrl=`,api);
   }
 
   
-  // getResults(baseUrl:any,file: File): Observable<HttpEvent<any>> {
-  //   const formData: FormData = new FormData();
-
-  //   formData.append('file', file);
-
-  //   const req = new HttpRequest('POST', `https://859c-2401-4900-1cbc-9230-72-ddc9-21fb-cb9c.in.ngrok.io/openApi/java/urlWithFile?apiUrl=${baseUrl}`, formData, {
-  //     reportProgress: true,
-  //     responseType: 'json'
-  //   });
-
-  //   return this.httpClient.request(req);
-  // }
-
-  public sendFile(file: File | undefined) {
-    return this.httpClient.get(
-      ``,
-      { responseType: 'text' }
-    );
-    //return file;
-  }
-
   upload(file: File,baseUrl:string,jarFile:File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     formData.append('baseUrl',baseUrl)
@@ -105,7 +84,14 @@ export class ApiServiceService {
     return this.httpClient.request(req);
   }
 
-  // getFiles(): Observable<any> {
-  //   return this.httpClient.get(`${this.baseUrl}/files`);
-  // }
+  //testEditedData
+  public resendSelectedItems(selectedRowstoSend:Array<any>){
+console.log(selectedRowstoSend);
+    const req = new HttpRequest('POST', this.ngrokUrl+`/graphql/testEditedData`, selectedRowstoSend, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.httpClient.request(req);
+  }
 }

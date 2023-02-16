@@ -1,14 +1,12 @@
 import { NONE_TYPE } from '@angular/compiler';
-import { Component, Injectable, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiServiceService } from 'src/api-service.service';
-import { NgxSpinnerService } from "ngx-spinner";
-import { LandingPageComponent } from '../landing-page/landing-page.component';
-import { map, Observable } from 'rxjs';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
+import { AgGridAngular } from 'ag-grid-angular';
+import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
 
-
-  
-  export interface DataSource {
+export interface DataSource {
   className: string;
   method: string;
   baseUrl: string;
@@ -20,7 +18,7 @@ import { map, Observable } from 'rxjs';
   passedOrFailed:string;
   pathParam:string;
   requestParam:string;
-  exceptionMessage:string;
+  responsePayload:string;
 }
 
 @Component({
@@ -33,60 +31,118 @@ import { map, Observable } from 'rxjs';
 })
 
 export class ResultsPageComponent implements OnInit {
-  dataSource:any;
-  Globalfile?: FileList
-  newFile?: FileList;
-  newFile2?: FileList;
-  sub:any;
-  
-  constructor(private router: Router,private apiService: ApiServiceService,
-    private route:ActivatedRoute,private spinner: NgxSpinnerService,
-    private landingPage:LandingPageComponent
-    ) {}
-
-  ngOnInit(): void { 
-    //uncomment
-    // this.spinner.show();  
-    //   if(localStorage.getItem('tech')==='Open Spec API'){ 
-    //   this.apiService.getResults(localStorage.getItem('apiSpec')).subscribe((data)=>{
-    //     console.log("data",data);
-    //     this.dataSource = data;
-    //     this.spinner.hide();
-    // });
-    // }
-    // else{
-    //   if(localStorage.getItem('tech')==='GraphQL'){
-    //    this.apiService.getResultsforGraphQl(localStorage.getItem('apiSpec')).subscribe((data)=>{
-    //       console.log("data",data);
-        
-    //       this.dataSource = data;
-    //       this.spinner.hide();
-    //   });
-    //   }
-    // }  
-     //uncomment till here
-
-     //trial
-     //const result = this.route.snapshot.queryParamMap.get('result');
-    // this.dataService.getLogoutStatus.subscribe((data) => {
-      this.apiService.content.subscribe((data) => {
-        this.dataSource=data;
-      })
-      
-  }
 
 
-
-  goBack(){
+goBack(){
     this.router.navigate(['']);
   }
 
-  filetransfer(file?: FileList){
-    
-    this.Globalfile=file;
-   
-  }
-  
-  displayedColumns: string[] = ['className', 'method', 'baseUrl', 'path','payloadJson','pathParam','requestParam',
-  'responseTime','expectedStatus','responseStatus','passedOrFailed','exceptionMessage'];
+// Each Column Definition results in one Column.
+public columnDefs: ColDef[] = [
+  { field: 'className', checkboxSelection: true, headerCheckboxSelection: true },
+  { field: 'method' },
+  { field: 'baseUrl' },
+  { field: 'path' },
+  { field: 'payloadJson' },
+  { field: 'pathParam' },
+  { field: 'requestParam' },
+  { field: 'responseTime' },
+  { field: 'expectedStatus' },
+  { field: 'responseStatus' },
+  { field: 'passedOrFailed' },
+  { field: 'responsePayload'},
+];
+
+// DefaultColDef sets props common to all Columns
+public defaultColDef: ColDef = {
+  editable: true,
+  sortable: true,
+  filter: true,
+};
+
+public selectedRowstoSend: Array<any> =[];
+// Data that gets displayed in the grid
+public rowData = <any>[];
+
+// For accessing the Grid's API
+@ViewChild(AgGridAngular) agGrid!: AgGridAngular;
+
+progress = 0;
+message = '';
+articles:any;
+constructor(private http: HttpClient,private router: Router,private apiService: ApiServiceService) {}
+
+
+onGridReady(params:GridReadyEvent){
+this.apiService.content.subscribe((data)=>{
+  this.rowData = data;
+})
 }
+
+// Example of consuming Grid Event
+onCellClicked(e: CellClickedEvent): void {
+}
+
+// Example using Grid's API
+duplicateRowsSelected(): void {
+  const nodes = this.agGrid.api.getSelectedNodes();
+  let count=0;
+  for(let node  of nodes){
+    const data = JSON.parse(JSON.stringify(node['data']))
+    count++
+    data['className'] = data['className'] + '_' +count
+    if(node.rowIndex != null){
+      this.rowData.splice(node.rowIndex + count, 0, data)
+      this.agGrid.api.setRowData(this.rowData); 
+      console.log(this.rowData)
+    }
+  }
+}
+
+ngOnInit(): void {
+    
+}
+
+
+regenerateReport(){
+  this.progress = 0;
+  var i;
+  const nodes = this.agGrid.api.getSelectedNodes();
+ // let count=0;
+  for(let node  of nodes){
+    const data = JSON.parse(JSON.stringify(node['data']))
+    this.selectedRowstoSend.push(data)
+  }
+    this.apiService.resendSelectedItems(this.selectedRowstoSend).subscribe({
+      next: (event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+        } else if (event instanceof HttpResponse) {
+          this.message = event.body.message;
+          this.articles = event;
+          this.rowData=this.articles['body'];
+          //this.router.navigate(['app-results-page'])
+          //this.apiService.passDatatoResultsPage(this.articles['body']);
+          //this.spinner.hide();
+        }
+      },
+      error: (err: any) => {
+        console.log(err);
+        this.progress = 0;
+
+        if (err.error && err.error.message) {
+          this.message = err.error.message;
+        } else {
+          this.message = 'Could not upload the file!';
+        }
+      }
+});
+    this.selectedRowstoSend=[]; 
+}
+}
+
+
+
+
+
+

@@ -14,11 +14,14 @@ import { HttpClientModule } from '@angular/common/http';
 // import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AgGridModule } from 'ag-grid-angular';
+import { NumericCellEditorComponent } from './numeric-cell-editor/numeric-cell-editor.component';
 @NgModule({
   declarations: [
     AppComponent,
     ResultsPageComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    NumericCellEditorComponent
     
   ],
   imports: [
@@ -28,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AllMaterials,
     HttpClientModule,
    NgxSpinnerModule ,
-   BrowserAnimationsModule
+   BrowserAnimationsModule,
+   AgGridModule
   // NgHttpLoaderModule.forRoot(),
   ],
   providers: [],

@@ -20,6 +20,8 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "ag-grid-angular": "^29.0.0",
+    "ag-grid-community": "^29.0.0",
     "bootstrap": "^5.2.3",
     "ng-http-loader": "^13.0.0",
     "ngx-spinner": "^13.1.0",
