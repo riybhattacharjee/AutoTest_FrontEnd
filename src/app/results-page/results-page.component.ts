@@ -5,6 +5,9 @@ import { ApiServiceService } from 'src/api-service.service';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
+import { NgxSpinnerService } from 'ngx-spinner';
+import {} from 'randomstring' ;
+//const result = randomString.generate(40);
 
 export interface DataSource {
   className: string;
@@ -32,6 +35,7 @@ export interface DataSource {
 
 export class ResultsPageComponent implements OnInit {
 
+  
 
 goBack(){
     this.router.navigate(['']);
@@ -70,7 +74,8 @@ public rowData = <any>[];
 progress = 0;
 message = '';
 articles:any;
-constructor(private http: HttpClient,private router: Router,private apiService: ApiServiceService) {}
+count=0;
+constructor(private http: HttpClient,private router: Router,private apiService: ApiServiceService,private spinner: NgxSpinnerService,) {}
 
 
 onGridReady(params:GridReadyEvent){
@@ -78,6 +83,7 @@ this.apiService.content.subscribe((data)=>{
   this.rowData = data;
 })
 }
+possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,./;'[]\=-)(*&^%$#@!~`";
 
 // Example of consuming Grid Event
 onCellClicked(e: CellClickedEvent): void {
@@ -85,14 +91,28 @@ onCellClicked(e: CellClickedEvent): void {
 
 // Example using Grid's API
 duplicateRowsSelected(): void {
+
+  let text = "";
+  for (let i = 0; i < 7; i++) {
+    text += this.possible.charAt(Math.floor(Math.random() * this.possible.length));
+  }
+
   const nodes = this.agGrid.api.getSelectedNodes();
-  let count=0;
+  //let count=0;
+  
   for(let node  of nodes){
     const data = JSON.parse(JSON.stringify(node['data']))
-    count++
-    data['className'] = data['className'] + '_' +count
+    let splitString
+    if(data['className'].split('_')){
+      splitString=data['className'].split('_')[0];
+      data['className'] = splitString+'_dup_'+text
+    }
+    else{
+      data['className'] = data['className']+'_dup_'+text
+    }
+   // data['className'] = data['className']+'_dup_'+text
     if(node.rowIndex != null){
-      this.rowData.splice(node.rowIndex + count, 0, data)
+      this.rowData.splice(node.rowIndex + this.count, 0, data)
       this.agGrid.api.setRowData(this.rowData); 
       console.log(this.rowData)
     }
@@ -105,6 +125,7 @@ ngOnInit(): void {
 
 
 regenerateReport(){
+  this.spinner.show()
   this.progress = 0;
   var i;
   const nodes = this.agGrid.api.getSelectedNodes();
@@ -121,9 +142,9 @@ regenerateReport(){
           this.message = event.body.message;
           this.articles = event;
           this.rowData=this.articles['body'];
-          //this.router.navigate(['app-results-page'])
-          //this.apiService.passDatatoResultsPage(this.articles['body']);
-          //this.spinner.hide();
+          this.router.navigate(['app-results-page'])
+          this.apiService.passDatatoResultsPage(this.articles['body']);
+          this.spinner.hide();
         }
       },
       error: (err: any) => {
