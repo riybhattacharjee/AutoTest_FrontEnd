@@ -6,8 +6,7 @@ import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {} from 'randomstring' ;
-//const result = randomString.generate(40);
+
 
 export interface DataSource {
   className: string;
@@ -33,12 +32,14 @@ export interface DataSource {
   providedIn: 'root',
 })
 
-export class ResultsPageComponent implements OnInit {
 
+export class ResultsPageComponent implements OnInit {
+  
   
 
 goBack(){
-    this.router.navigate(['']);
+    this.router.navigate(['app-results-page']);
+    this.apiService.passDatatoResultsPage(this.lastRowData);
   }
 
 // Each Column Definition results in one Column.
@@ -57,6 +58,18 @@ public columnDefs: ColDef[] = [
   { field: 'responsePayload'},
 ];
 
+public columnDefsforGraphQl:ColDef[]=[
+  { field: 'apiName', checkboxSelection: true, headerCheckboxSelection: true },
+  { field: 'payloadJson' },
+  { field: 'pathParam' },
+  { field: 'passedOrFailed' },
+  { field: 'responsePayload'},
+  { field: 'expectedStatus' },
+  { field: 'responseStatus' },
+  { field: 'responseTime' },
+  
+]
+
 // DefaultColDef sets props common to all Columns
 public defaultColDef: ColDef = {
   editable: true,
@@ -67,18 +80,23 @@ public defaultColDef: ColDef = {
 public selectedRowstoSend: Array<any> =[];
 // Data that gets displayed in the grid
 public rowData = <any>[];
+public lastRowData =<any>[];
 
 // For accessing the Grid's API
 @ViewChild(AgGridAngular) agGrid!: AgGridAngular;
+
 
 progress = 0;
 message = '';
 articles:any;
 count=0;
+ nodes:any;
+ technology:any
 constructor(private http: HttpClient,private router: Router,private apiService: ApiServiceService,private spinner: NgxSpinnerService,) {}
 
 
 onGridReady(params:GridReadyEvent){
+ this.technology= localStorage.getItem("technology")
 this.apiService.content.subscribe((data)=>{
   this.rowData = data;
 })
@@ -114,6 +132,7 @@ duplicateRowsSelected(): void {
     if(node.rowIndex != null){
       this.rowData.splice(node.rowIndex + this.count, 0, data)
       this.agGrid.api.setRowData(this.rowData); 
+      this.lastRowData=this.rowData;
       console.log(this.rowData)
     }
   }
@@ -128,9 +147,22 @@ regenerateReport(){
   this.spinner.show()
   this.progress = 0;
   var i;
-  const nodes = this.agGrid.api.getSelectedNodes();
+  console.log(this.agGrid.api.getSelectedNodes())
+  if(this.agGrid.api.getSelectedNodes().length=0 && this.agGrid.api.getSelectedNodes()==[]){
+    console.log("inside if")
+    this.apiService.content.subscribe((data)=>{
+      this.rowData = data;
+    })
+    this.nodes=this.rowData
+    
+  }
+  else{
+     this.nodes = this.agGrid.api.getSelectedNodes();
+  }
+  console.log(this.nodes)
+  //const nodes = this.agGrid.api.getSelectedNodes();
  // let count=0;
-  for(let node  of nodes){
+  for(let node  of this.nodes){
     const data = JSON.parse(JSON.stringify(node['data']))
     this.selectedRowstoSend.push(data)
   }

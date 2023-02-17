@@ -4,7 +4,7 @@
 <p style="font-size: 100px; color: black">Loading...</p>
 </ngx-spinner>
 
-<button 
+<!-- <button 
   class="btn btn-primary" (click)="goBack()" style="margin-left: 10px; width: auto; margin-top: 14px;"
   >Go Back
 </button>
@@ -14,11 +14,29 @@
   >Generate Report
 </button>
 
-<!-- Button to clear selection -->
+
 <button (click)="duplicateRowsSelected()" class="btn btn-primary" style="margin-left: 10px;
-margin-top: 14px;">Duplicate Rows Selected</button>
+margin-top: 14px;">Duplicate Rows Selected</button> -->
+
+
+<div class="button-div" style=" position:fixed;top:0;width:100%;z-index:100;backdrop-filter:blur(5px);margin-left:0;"><button  class="btn btn-primary" (click)="goBack()" style="margin-left: 10px; width: auto; margin-top: 14px;"  >Go Back
+</button><button  class="btn btn-primary" (click)="regenerateReport()" style="margin-left: 10px; width: auto; margin-top: 14px;"  >Generate Report
+</button><!-- Button to clear selection --><button (click)="duplicateRowsSelected()" class="btn btn-primary" style="margin-left: 10px;margin-top: 14px;">Duplicate Rows Selected</button></div>
+
 <!-- AG Grid Angular Component -->
-<ag-grid-angular
+<ag-grid-angular *ngIf="technology=='GraphQL'"
+   style="width: 100%; height: 100%; margin-top: 10px;"
+   class="ag-theme-alpine"
+   [columnDefs]="columnDefsforGraphQl"
+   [defaultColDef]="defaultColDef"
+   [rowData]="rowData"
+   [rowSelection]="'multiple'"
+   [animateRows]="true"
+   (gridReady)="onGridReady($event)"
+   (cellClicked)="onCellClicked($event)"
+ ></ag-grid-angular>
+
+ <ag-grid-angular *ngIf="technology!='GraphQL'"
    style="width: 100%; height: 100%; margin-top: 10px;"
    class="ag-theme-alpine"
    [columnDefs]="columnDefs"
