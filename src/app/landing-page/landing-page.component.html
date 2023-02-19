@@ -1,75 +1,114 @@
-<ngx-spinner
-bdColor="rgb(255,255,255)" type="ball-scale-multiple"
-  
->
-
-<br><br><br>
-<p style="font-size: 100px; color: black">Loading..</p>
+<ngx-spinner bdColor="rgb(255,255,255)" type="ball-scale-multiple">
+  <br /><br /><br />
+  <p style="font-size: 100px; color: black">Loading..</p>
 </ngx-spinner>
-<div class="container" style="margin-top: 70px; background-color: white;">
-        <label class="Mainheading" style="margin-top: 25px;">Auto Test</label><br><br>
-  <form  novalidate
-        (ngSubmit)="onSubmit(f)"
-        #f="ngForm">
-  
-        <div class="form-group">
-          <label class="heading" style="margin-top: 11px;">Select a Source</label>
-          <select class="form-control"
-                  name="technology"
-                  [(ngModel)]="model.technology" required>
-            <option value="">Please select a source</option>
-            <option *ngFor="let tech of techs"
-                    [value]="tech">{{tech}}
-            </option>
-          </select>
-        </div>
-        <br>
-      <div class="form-group"
-           [ngClass]="{
-          'has-danger': apiSpec.invalid && (apiSpec.dirty || apiSpec.touched),
-          'has-success': apiSpec.valid && (apiSpec.dirty || apiSpec.touched)
-     }">
-        <label class="heading" *ngIf="model.technology!='Jar File'">Enter the URL</label>
-        <label class="heading" *ngIf="model.technology=='Jar File'">Enter the Base URL</label>
-        <input type="text"
-               class="form-control"
-               name="apiSpec"
-               [(ngModel)]="model.apiSpec"
-               required
-               #apiSpec="ngModel">
-        <div class="form-control-feedback"
-             *ngIf="apiSpec.errors && (apiSpec.dirty || apiSpec.touched)">
-         
-        </div>
-      </div>
-  
-  <br>
-  
-  <label class="heading" *ngIf="model.technology=='Jar File'">Jar File</label> &nbsp;&nbsp;
-   <input type="file" class="file-input" name="upload_file" accept=".jar"
-   (change)="onFileSelected($event)" #fileUpload required *ngIf="model.technology=='Jar File'">
+<div class="container" style="margin-top: 70px; background-color: white">
+  <label class="Mainheading" style="margin-top: 25px">Auto Test</label
+  ><br /><br />
+  <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <div class="form-group">
+      <label class="heading" style="margin-top: 11px">Select a Source</label>
+      <select
+        class="form-control"
+        name="technology"
+        [(ngModel)]="model.technology"
+        required
+      >
+        <option value="">Please select a source</option>
+        <option *ngFor="let tech of techs" [value]="tech">{{ tech }}</option>
+      </select>
+    </div>
+    <br />
+    <div
+      class="form-group"
+      [ngClass]="{
+        'has-danger': apiSpec.invalid && (apiSpec.dirty || apiSpec.touched),
+        'has-success': apiSpec.valid && (apiSpec.dirty || apiSpec.touched)
+      }"
+    >
+      <label class="heading" *ngIf="model.technology != 'Jar File'"
+        >Enter the URL</label
+      >
+      <label class="heading" *ngIf="model.technology == 'Jar File'"
+        >Enter the Base URL</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        name="apiSpec"
+        [(ngModel)]="model.apiSpec"
+        required
+        #apiSpec="ngModel"
+      />
+      <div
+        class="form-control-feedback"
+        *ngIf="apiSpec.errors && (apiSpec.dirty || apiSpec.touched)"
+      ></div>
+    </div>
 
-   <br *ngIf="model.technology=='Jar File'"><br *ngIf="model.technology=='Jar File'">
+    <br />
 
-   <label class="heading">Api Excel File</label> &nbsp;&nbsp;
-   <input type="file" class="file-input" name="upload_file" accept=".xls,.xlsx"
-   (change)="onExcelFileSelected($event)" #fileUpload required>
-<br><br>
-  
-    <button type="submit"
-            class="btn btn-primary" (click)="generateReport(f)"
-            [disabled]="f.invalid" *ngIf="model.technology=='GraphQL'" style="margin-bottom: 15px;">Generate Report
+    <label class="heading" *ngIf="model.technology == 'Jar File'"
+      >Jar File</label
+    >
+    &nbsp;&nbsp;
+    <input
+      type="file"
+      class="file-input"
+      name="upload_file"
+      accept=".jar"
+      (change)="onFileSelected($event)"
+      #fileUpload
+      required
+      *ngIf="model.technology == 'Jar File'"
+    />
+
+    <br *ngIf="model.technology == 'Jar File'" /><br
+      *ngIf="model.technology == 'Jar File'"
+    />
+
+    <label class="heading">Api Excel File</label> &nbsp;&nbsp;
+    <input
+      type="file"
+      class="file-input"
+      name="upload_file"
+      accept=".xls,.xlsx"
+      (change)="onExcelFileSelected($event)"
+      #fileUpload
+      required
+    />
+    <br /><br />
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="generateReport(f)"
+      [disabled]="f.invalid"
+      *ngIf="model.technology == 'GraphQL'"
+      style="margin-bottom: 15px"
+    >
+      Generate Report
     </button>
-    <button type="submit"
-            class="btn btn-primary" (click)="generateReport(f)"
-            [disabled]="f.invalid" *ngIf="model.technology!='Jar File' && model.technology!='GraphQL'" style="margin-bottom: 15px;">Generate Report
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="generateReport(f)"
+      [disabled]="f.invalid"
+      *ngIf="model.technology != 'Jar File' && model.technology != 'GraphQL'"
+      style="margin-bottom: 15px"
+    >
+      Generate Report
     </button>
-    <button type="submit"
-            class="btn btn-primary" (click)="generateReportIfJar(f)"
-            [disabled]="f.invalid" *ngIf="model.technology=='Jar File'" style="margin-bottom: 15px;">Generate Report
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="generateReportIfJar(f)"
+      [disabled]="f.invalid"
+      *ngIf="model.technology == 'Jar File'"
+      style="margin-bottom: 15px"
+    >
+      Generate Report
     </button>
-  
-  
-  </form> 
- <router-outlet></router-outlet>
-  </div> 
+  </form>
+  <router-outlet></router-outlet>
+</div>
