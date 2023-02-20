@@ -1,0 +1,13 @@
+.header-wrapper {
+    z-index: 10!important;
+    background-color: #fff;
+    display: flex;
+    height: 64px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 0 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    box-shadow: 0 0 2px 0 grey;
+}

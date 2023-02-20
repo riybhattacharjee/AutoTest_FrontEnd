@@ -20,6 +20,7 @@ export interface DataSource {
   pathParam: string;
   requestParam: string;
   responsePayload: string;
+  apiName: string;
 }
 
 @Component({
@@ -134,6 +135,33 @@ export class ResultsPageComponent implements OnInit {
         data['className'] = splitString + '_dup_' + text;
       } else {
         data['className'] = data['className'] + '_dup_' + text;
+      }
+      if (node.rowIndex != null) {
+        this.rowData.splice(node.rowIndex + this.count, 0, data);
+        this.agGrid.api.setRowData(this.rowData);
+      }
+    }
+  }
+
+  duplicateRowsSelectedforGraphql(): void {
+    let text = '';
+    for (let i = 0; i < 7; i++) {
+      text += this.possible.charAt(
+        Math.floor(Math.random() * this.possible.length)
+      );
+    }
+
+    const nodes = this.agGrid.api.getSelectedNodes();
+    //let count=0;
+
+    for (let node of nodes) {
+      const data = JSON.parse(JSON.stringify(node['data']));
+      let splitString;
+      if (data['apiName'].split('_')) {
+        splitString = data['apiName'].split('_')[0];
+        data['apiName'] = splitString + '_dup_' + text;
+      } else {
+        data['apiName'] = data['apiName'] + '_dup_' + text;
       }
       if (node.rowIndex != null) {
         this.rowData.splice(node.rowIndex + this.count, 0, data);

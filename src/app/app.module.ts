@@ -16,12 +16,14 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AgGridModule } from 'ag-grid-angular';
 import { NumericCellEditorComponent } from './numeric-cell-editor/numeric-cell-editor.component';
+import { HeaderComponent } from './header/header.component';
 @NgModule({
   declarations: [
     AppComponent,
     ResultsPageComponent,
     LandingPageComponent,
-    NumericCellEditorComponent
+    NumericCellEditorComponent,
+    HeaderComponent
     
   ],
   imports: [

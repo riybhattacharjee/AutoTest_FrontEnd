@@ -33,9 +33,17 @@
   >
     Generate Report</button
   ><!-- Button to clear selection --><button
+    (click)="duplicateRowsSelectedforGraphql()"
+    class="btn btn-primary"
+    style="margin-left: 10px; margin-top: 14px" *ngIf="technology == 'GraphQL'"
+  >
+    Duplicate Rows Selected
+  </button>
+
+  <button
     (click)="duplicateRowsSelected()"
     class="btn btn-primary"
-    style="margin-left: 10px; margin-top: 14px"
+    style="margin-left: 10px; margin-top: 14px" *ngIf="technology != 'GraphQL'"
   >
     Duplicate Rows Selected
   </button>
