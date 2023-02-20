@@ -40,9 +40,7 @@ export class LandingPageComponent implements OnInit {
   generateReportClicked: boolean = false;
   selectedFiles?: FileList;
   selectedFilesJar?: FileList;
-  //selectedFiles?: File;
   currentFile?: File;
-  //currentFile:any;
   currentJar?: File;
   progress = 0;
   message = '';
@@ -53,17 +51,14 @@ export class LandingPageComponent implements OnInit {
   constructor(
     private router: Router,
     private apiService: ApiServiceService,
-    // private resultPage:ResultsPageComponent,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService
   ) {}
 
   states!: Observable<object>;
   ngOnInit(): void {
-    //this.fileInfos = this.apiService.getFiles();
   }
 
-  //new code trial
   model: Model = new Model('', '');
 
   @ViewChild('f') form: any;
@@ -73,7 +68,6 @@ export class LandingPageComponent implements OnInit {
   onSubmit(f: NgForm) {
     if (this.form.valid) {
       this.spinner.show();
-      //this.form.reset();
     }
   }
 
@@ -85,14 +79,11 @@ export class LandingPageComponent implements OnInit {
     this.selectedFiles = event.target.files;
   }
 
-  //trial for api spec
-
   generateReport(f: NgForm): void {
     localStorage.setItem('technology', f.value['technology']);
     this.progress = 0;
     this.baseUrl = f.value['apiSpec'];
     if (this.selectedFiles) {
-      // this.spinner.show();
       const file: File | null = this.selectedFiles.item(0);
 
       if (file) {
@@ -104,7 +95,6 @@ export class LandingPageComponent implements OnInit {
               this.progress = Math.round((100 * event.loaded) / event.total);
             } else if (event instanceof HttpResponse) {
               this.message = event.body.message;
-              //this.fileInfos = this.apiService.getFiles();
               this.articles = event.body;
               this.router.navigate(['app-results-page']);
 
@@ -137,7 +127,6 @@ export class LandingPageComponent implements OnInit {
             this.progress = Math.round((100 * event.loaded) / event.total);
           } else if (event instanceof HttpResponse) {
             this.message = event.body.message;
-            //this.fileInfos = this.apiService.getFiles();
             this.articles = event.body;
             this.router.navigate(['app-results-page']);
 

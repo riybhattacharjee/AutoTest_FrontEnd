@@ -33,7 +33,11 @@ export interface DataSource {
 export class ResultsPageComponent implements OnInit {
   goBack() {
     this.router.navigate(['app-results-page']);
-    this.apiService.passDatatoResultsPage(this.lastRowData);
+    this.rowData=this.lastRowData;
+  }
+
+  goToHome(){
+    this.router.navigate(['']);
   }
 
   // Each Column Definition results in one Column.
@@ -131,12 +135,9 @@ export class ResultsPageComponent implements OnInit {
       } else {
         data['className'] = data['className'] + '_dup_' + text;
       }
-      // data['className'] = data['className']+'_dup_'+text
       if (node.rowIndex != null) {
         this.rowData.splice(node.rowIndex + this.count, 0, data);
         this.agGrid.api.setRowData(this.rowData);
-        this.lastRowData = this.rowData;
-        console.log(this.rowData);
       }
     }
   }
@@ -145,6 +146,7 @@ export class ResultsPageComponent implements OnInit {
 
   regenerateReport() {
     this.spinner.show();
+    this.lastRowData=this.rowData;
     this.progress = 0;
     var i;
     console.log(this.agGrid.api.getSelectedNodes());
@@ -161,8 +163,6 @@ export class ResultsPageComponent implements OnInit {
       this.nodes = this.agGrid.api.getSelectedNodes();
     }
     console.log(this.nodes);
-    //const nodes = this.agGrid.api.getSelectedNodes();
-    // let count=0;
     for (let node of this.nodes) {
       const data = JSON.parse(JSON.stringify(node['data']));
       this.selectedRowstoSend.push(data);

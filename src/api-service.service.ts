@@ -9,7 +9,7 @@ export class ApiServiceService {
   url:string|undefined;
   jsonResponseList:Array<any> | undefined;
   name: any=null;
-  ngrokUrl='https://7a47-2401-4900-1f24-5a8b-a0fd-b633-867e-456a.in.ngrok.io';
+  ngrokUrl='https://6a8c-2401-4900-1cbc-8443-d0e1-5b1f-c3e9-372.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
