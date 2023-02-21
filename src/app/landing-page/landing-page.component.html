@@ -96,7 +96,7 @@
       *ngIf="model.technology == 'Jar File'"
     />
 
-    <label class="heading">Api Excel File</label> &nbsp;&nbsp;
+    <label class="heading" *ngIf="model.technology != 'GraphQL'">Api Excel File</label> &nbsp;&nbsp;
     <input
       type="file"
       class="file-input"
@@ -104,7 +104,7 @@
       accept=".xls,.xlsx"
       (change)="onExcelFileSelected($event)"
       #fileUpload
-      required
+      required *ngIf="model.technology != 'GraphQL'"
     />
     <br /><br />
 

@@ -34,17 +34,17 @@ export interface DataSource {
 export class ResultsPageComponent implements OnInit {
   goBack() {
     this.router.navigate(['app-results-page']);
-    this.rowData=this.lastRowData;
+    this.rowData = this.lastRowData;
   }
 
-  goToHome(){
+  goToHome() {
     this.router.navigate(['']);
   }
 
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {
-      field: 'className',
+      field: 'apiName',
       checkboxSelection: true,
       headerCheckboxSelection: true,
     },
@@ -130,33 +130,6 @@ export class ResultsPageComponent implements OnInit {
     for (let node of nodes) {
       const data = JSON.parse(JSON.stringify(node['data']));
       let splitString;
-      if (data['className'].split('_')) {
-        splitString = data['className'].split('_')[0];
-        data['className'] = splitString + '_dup_' + text;
-      } else {
-        data['className'] = data['className'] + '_dup_' + text;
-      }
-      if (node.rowIndex != null) {
-        this.rowData.splice(node.rowIndex + this.count, 0, data);
-        this.agGrid.api.setRowData(this.rowData);
-      }
-    }
-  }
-
-  duplicateRowsSelectedforGraphql(): void {
-    let text = '';
-    for (let i = 0; i < 7; i++) {
-      text += this.possible.charAt(
-        Math.floor(Math.random() * this.possible.length)
-      );
-    }
-
-    const nodes = this.agGrid.api.getSelectedNodes();
-    //let count=0;
-
-    for (let node of nodes) {
-      const data = JSON.parse(JSON.stringify(node['data']));
-      let splitString;
       if (data['apiName'].split('_')) {
         splitString = data['apiName'].split('_')[0];
         data['apiName'] = splitString + '_dup_' + text;
@@ -170,31 +143,33 @@ export class ResultsPageComponent implements OnInit {
     }
   }
 
+
   ngOnInit(): void {}
 
   regenerateReport() {
     this.spinner.show();
-    this.lastRowData=this.rowData;
+    this.lastRowData = this.rowData;
     this.progress = 0;
     var i;
-    console.log(this.agGrid.api.getSelectedNodes());
-    if (
-      (this.agGrid.api.getSelectedNodes().length =
-        0 && this.agGrid.api.getSelectedNodes() == [])
-    ) {
+    //console.log(this.agGrid.api.getSelectedNodes());
+    if(this.agGrid.api.getSelectedNodes().length== 0) {
       console.log('inside if');
       this.apiService.content.subscribe((data) => {
         this.rowData = data;
       });
-      this.nodes = this.rowData;
-    } else {
+      this.selectedRowstoSend = this.rowData;
+      //this.selectedRowstoSend.push(this.nodes);
+    } 
+    else {
+      console.log("in else")
       this.nodes = this.agGrid.api.getSelectedNodes();
-    }
+    
     console.log(this.nodes);
     for (let node of this.nodes) {
       const data = JSON.parse(JSON.stringify(node['data']));
       this.selectedRowstoSend.push(data);
     }
+  }
     this.apiService.resendSelectedItems(this.selectedRowstoSend).subscribe({
       next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress) {

@@ -23,6 +23,7 @@
     "ag-grid-angular": "^29.0.0",
     "ag-grid-community": "^29.0.0",
     "bootstrap": "^5.2.3",
+    "cors": "^2.8.5",
     "ng-http-loader": "^13.0.0",
     "ngx-spinner": "^13.1.0",
     "randomstring": "^1.2.3",
