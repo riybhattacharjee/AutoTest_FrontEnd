@@ -138,6 +138,16 @@
     >
       Generate Report
     </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="generateApiList(f)"
+      [disabled]="f.invalid"
+      
+      style="margin-bottom: 15px;    margin-left: 30px;"
+    >
+      Generate Api List
+    </button>
   </form>
   <router-outlet></router-outlet>
 </div>

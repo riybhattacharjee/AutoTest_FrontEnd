@@ -44,36 +44,36 @@ export class ResultsPageComponent implements OnInit {
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {
-      field: 'apiName',
+      field: 'apiName', editable: false ,
       checkboxSelection: true,
       headerCheckboxSelection: true,
     },
-    { field: 'method' },
-    { field: 'baseUrl' },
-    { field: 'path' },
+    { field: 'method' ,editable: false },
+    { field: 'baseUrl' ,editable: false },
+    { field: 'path' ,editable: false },
     { field: 'payloadJson' },
     { field: 'pathParam' },
-    { field: 'requestParam' },
-    { field: 'responseTime' },
+    { field: 'requestParam' ,editable: false },
+    { field: 'responseTime' ,editable: false },
     { field: 'expectedStatus' },
-    { field: 'responseStatus' },
-    { field: 'passedOrFailed' },
-    { field: 'responsePayload' },
+    { field: 'responseStatus' ,editable: false },
+    { field: 'passedOrFailed' ,editable: false },
+    { field: 'responsePayload' ,editable: false },
   ];
 
   public columnDefsforGraphQl: ColDef[] = [
     {
-      field: 'apiName',
+      field: 'apiName',editable: false ,
       checkboxSelection: true,
       headerCheckboxSelection: true,
     },
     { field: 'payloadJson' },
     { field: 'pathParam' },
-    { field: 'passedOrFailed' },
+    { field: 'passedOrFailed',editable: false  },
     { field: 'responsePayload' },
     { field: 'expectedStatus' },
-    { field: 'responseStatus' },
-    { field: 'responseTime' },
+    { field: 'responseStatus' ,editable: false },
+    { field: 'responseTime' ,editable: false },
   ];
 
   // DefaultColDef sets props common to all Columns

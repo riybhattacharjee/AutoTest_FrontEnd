@@ -120,7 +120,6 @@ export class LandingPageComponent implements OnInit {
       this.selectedFiles = undefined;
     } else {
       this.spinner.show();
-      console.log('in else');
       this.apiService.getResultswithoutFile(this.baseUrl).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
@@ -148,6 +147,10 @@ export class LandingPageComponent implements OnInit {
         },
       });
     }
+  }
+
+  generateApiList(f: NgForm){
+
   }
 
   generateReportIfJar(f: NgForm): void {
