@@ -1,7 +1,15 @@
 <app-header></app-header>
-<ngx-spinner bdColor="rgb(255,255,255)">
+<!-- <ngx-spinner bdColor="rgb(255,255,255)">
   <p style="font-size: 100px; color: black">Loading...</p>
+</ngx-spinner> -->
+
+<ngx-spinner type="ball-scale-multiple"
+  bdColor="rgba(255, 255, 255, 1)"
+  template="<center><img src='https://i.pinimg.com/originals/00/57/26/0057261d14be347efdfd2e72003943b2.gif' style='width:30%' /><br/><img src='https://thumbs.gfycat.com/CompassionateGleefulLangur-max-1mb.gif' style='width:40%' /></center>"
+>
 </ngx-spinner>
+
+
 <!-- 
 <div class="jumbotron jumbotron-fluid" style="height: 10px;background-color: #4f678c;">
   <div class="container">
@@ -13,23 +21,28 @@
     <p class="lead" style="float: right; margin-top: -58px; color: white;">Powered by <br><br><b>Hashedin</b> By Deloitte</p>
   </div>
 </div> -->
+<app-header></app-header>
+<div style="height: 100px; width: 100%"></div>
 
 <div
   class="button-div"
   style="
-    top: 133px;
+    top: 100;
     width: 100%;
+    height: 50px;
     z-index: 100;
     backdrop-filter: blur(5px);
     margin-left: 0;
+    position: fixed;
   "
 >
- <button
+  <button
     class="btn btn-primary"
     (click)="goToHome()"
     style="margin-left: 10px; width: auto; margin-top: 14px"
   >
-    Home</button>
+    Home
+  </button>
 
   <button
     class="btn btn-primary"
@@ -46,7 +59,8 @@
   ><!-- Button to clear selection --><button
     (click)="duplicateRowsSelectedforGraphql()"
     class="btn btn-primary"
-    style="margin-left: 10px; margin-top: 14px" *ngIf="technology == 'GraphQL'"
+    style="margin-left: 10px; margin-top: 14px"
+    *ngIf="technology == 'GraphQL'"
   >
     Duplicate Rows Selected
   </button>
@@ -54,16 +68,18 @@
   <button
     (click)="duplicateRowsSelected()"
     class="btn btn-primary"
-    style="margin-left: 10px; margin-top: 14px" *ngIf="technology != 'GraphQL'"
+    style="margin-left: 10px; margin-top: 14px"
+    *ngIf="technology != 'GraphQL'"
   >
     Duplicate Rows Selected
   </button>
 </div>
+<div style="height: 50px; width: 100%"></div>
 
 <!-- AG Grid Angular Component -->
 <ag-grid-angular
   *ngIf="technology == 'GraphQL'"
-  style="width: 100%; height: 100%; margin-top: 20px"
+  style="width: 100%; height: 80%; margin-top: 20px"
   class="ag-theme-alpine"
   [columnDefs]="columnDefsforGraphQl"
   [defaultColDef]="defaultColDef"
@@ -76,7 +92,7 @@
 
 <ag-grid-angular
   *ngIf="technology != 'GraphQL'"
-  style="width: 100%; height: 100%; margin-top: 20px"
+  style="width: 100%; height: 80%; margin-top: 20px"
   class="ag-theme-alpine"
   [columnDefs]="columnDefs"
   [defaultColDef]="defaultColDef"
