@@ -74,8 +74,10 @@
   class="ag-theme-alpine"
   [columnDefs]="columnDefsforGraphQl"
   [defaultColDef]="defaultColDef"
+  [rowDragManaged]="true"
   [rowData]="rowData"
   [rowSelection]="'multiple'"
+  
   [animateRows]="true"
   (gridReady)="onGridReady($event)"
   (cellClicked)="onCellClicked($event)"
@@ -87,8 +89,10 @@
   class="ag-theme-alpine"
   [columnDefs]="columnDefs"
   [defaultColDef]="defaultColDef"
+  [rowDragManaged]="true"
   [rowData]="rowData"
   [rowSelection]="'multiple'"
+  
   [animateRows]="true"
   (gridReady)="onGridReady($event)"
   (cellClicked)="onCellClicked($event)"

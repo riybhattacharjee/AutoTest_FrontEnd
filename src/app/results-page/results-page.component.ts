@@ -44,7 +44,7 @@ export class ResultsPageComponent implements OnInit {
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
     {
-      field: 'apiName', editable: false ,
+      field: 'apiName', editable: false ,rowDrag: true ,
       checkboxSelection: true,
       headerCheckboxSelection: true,
     },
@@ -63,7 +63,7 @@ export class ResultsPageComponent implements OnInit {
 
   public columnDefsforGraphQl: ColDef[] = [
     {
-      field: 'apiName',editable: false ,
+      field: 'apiName',editable: false ,rowDrag: true ,
       checkboxSelection: true,
       headerCheckboxSelection: true,
     },
@@ -123,10 +123,7 @@ export class ResultsPageComponent implements OnInit {
         Math.floor(Math.random() * this.possible.length)
       );
     }
-
     const nodes = this.agGrid.api.getSelectedNodes();
-    //let count=0;
-
     for (let node of nodes) {
       const data = JSON.parse(JSON.stringify(node['data']));
       let splitString;
@@ -151,20 +148,14 @@ export class ResultsPageComponent implements OnInit {
     this.lastRowData = this.rowData;
     this.progress = 0;
     var i;
-    //console.log(this.agGrid.api.getSelectedNodes());
     if(this.agGrid.api.getSelectedNodes().length== 0) {
-      console.log('inside if');
       this.apiService.content.subscribe((data) => {
         this.rowData = data;
       });
       this.selectedRowstoSend = this.rowData;
-      //this.selectedRowstoSend.push(this.nodes);
     } 
     else {
-      console.log("in else")
       this.nodes = this.agGrid.api.getSelectedNodes();
-    
-    console.log(this.nodes);
     for (let node of this.nodes) {
       const data = JSON.parse(JSON.stringify(node['data']));
       this.selectedRowstoSend.push(data);
