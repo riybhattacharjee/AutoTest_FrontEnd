@@ -58,7 +58,7 @@ export class ResultsPageComponent implements OnInit {
     { field: 'expectedStatus' },
     { field: 'responseStatus' ,editable: false },
     { field: 'passedOrFailed' ,editable: false },
-    { field: 'responsePayload' ,editable: false },
+    { field: 'responsePayload' , editable: false },
   ];
 
   public columnDefsforGraphQl: ColDef[] = [
@@ -70,7 +70,7 @@ export class ResultsPageComponent implements OnInit {
     { field: 'payloadJson' },
     { field: 'pathParam' },
     { field: 'passedOrFailed',editable: false  },
-    { field: 'responsePayload' },
+    { field: 'responsePayload' ,editable: false },
     { field: 'expectedStatus' },
     { field: 'responseStatus' ,editable: false },
     { field: 'responseTime' ,editable: false },

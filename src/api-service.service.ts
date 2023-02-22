@@ -9,14 +9,13 @@ export class ApiServiceService {
   url:string|undefined;
   jsonResponseList:Array<any> | undefined;
   name: any=null;
-  ngrokUrl='https://648f-2401-4900-1f24-3c30-d1ad-cc52-37c1-4e6e.in.ngrok.io';
+  ngrokUrl='https://0595-2401-4900-1f24-4187-c159-ad49-c83c-18d2.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
     ) {}
 
   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> {
-    console.log("called")
     if(localStorage.getItem("technology")=='Open Spec API'){
  this.url =this.ngrokUrl+`/openApi/java/urlWithFile?apiUrl=`;
     }
@@ -38,8 +37,8 @@ export class ApiServiceService {
   
   }
 
-  getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> {
-    console.log("called")
+
+  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> {
     if(localStorage.getItem("technology")=='Open Spec API'){
  this.url =this.ngrokUrl+`/openApi/java/urlWithFile?apiUrl=`;
     }
@@ -50,8 +49,52 @@ export class ApiServiceService {
     }
 
     const formData: FormData = new FormData();
+    formData.append('excelFile', file);
+     const req = new HttpRequest('POST',  this.url+baseUrl, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    }); 
+    console.log(req)
+    return this.httpClient.request(req);
+  
+  
+  }
+
+
+  getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> {
+    console.log("called")
+    if(localStorage.getItem("technology")=='Open Spec API'){
+ this.url =`/openApi/java/urlWithFile?apiUrl`;
+    }
+    else{
+      if(localStorage.getItem("technology")=='GraphQL'){
+        this.url =`/graphql/apiTest`;
+      }
+    }
+
+    const formData: FormData = new FormData();
     formData.append('baseUrl',baseUrl);
-     const req = new HttpRequest('POST',  this.ngrokUrl+'/graphql/apiTest', formData, {
+     const req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    }); 
+    console.log(req)
+    return this.httpClient.request(req);
+  
+  
+  }
+
+  getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> {
+    console.log("getResultsForApiOnlyWithoutFile")
+    if(localStorage.getItem("technology")=='Open Spec API'){
+ //this.url =`/openApi/java/urlWithFile?apiUrl=`;
+    }
+    else{
+      if(localStorage.getItem("technology")=='GraphQL'){
+        this.url ='/graphql/generateApiDetails?baseUrl=';
+      }
+    }
+     const req = new HttpRequest('GET',  this.ngrokUrl+this.url+baseUrl, {
       reportProgress: true,
       responseType: 'json'
     }); 

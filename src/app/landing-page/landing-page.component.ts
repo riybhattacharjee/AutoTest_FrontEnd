@@ -47,6 +47,7 @@ export class LandingPageComponent implements OnInit {
   fileInfos?: Observable<any>;
   baseUrl: string = '';
   tech: string = '';
+  //generateApiFlag:string='1';
 
   constructor(
     private router: Router,
@@ -85,10 +86,8 @@ export class LandingPageComponent implements OnInit {
     this.baseUrl = f.value['apiSpec'];
     if (this.selectedFiles) {
       const file: File | null = this.selectedFiles.item(0);
-
       if (file) {
         this.currentFile = file;
-
         this.apiService.getResults(this.currentFile, this.baseUrl).subscribe({
           next: (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
@@ -97,7 +96,6 @@ export class LandingPageComponent implements OnInit {
               this.message = event.body.message;
               this.articles = event.body;
               this.router.navigate(['app-results-page']);
-
               this.apiService.passDatatoResultsPage(this.articles);
               this.spinner.hide();
             }
@@ -116,7 +114,6 @@ export class LandingPageComponent implements OnInit {
           },
         });
       }
-
       this.selectedFiles = undefined;
     } else {
       this.spinner.show();
@@ -150,7 +147,69 @@ export class LandingPageComponent implements OnInit {
   }
 
   generateApiList(f: NgForm){
+    localStorage.setItem('technology', f.value['technology']);
+    this.progress = 0;
+    this.baseUrl = f.value['apiSpec'];
+    if (this.selectedFiles) {
+      const file: File | null = this.selectedFiles.item(0);
+      if (file) {
+        this.currentFile = file;
+        this.apiService.getResultsForApiOnly(this.currentFile, this.baseUrl).subscribe({
+          next: (event: any) => {
+            if (event.type === HttpEventType.UploadProgress) {
+              this.progress = Math.round((100 * event.loaded) / event.total);
+            } else if (event instanceof HttpResponse) {
+              this.message = event.body.message;
+              this.articles = event.body;
+              this.router.navigate(['app-results-page']);
+              this.apiService.passDatatoResultsPage(this.articles);
+              this.spinner.hide();
+            }
+          },
+          error: (err: any) => {
+            console.log(err);
+            this.progress = 0;
 
+            if (err.error && err.error.message) {
+              this.message = err.error.message;
+            } else {
+              this.message = 'Could not upload the file!';
+            }
+
+            this.currentFile = undefined;
+          },
+        });
+      }
+      this.selectedFiles = undefined;
+    } else {
+      this.spinner.show();
+      this.apiService.getResultsForApiOnlyWithoutFile(this.baseUrl).subscribe({
+        next: (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          } else if (event instanceof HttpResponse) {
+            this.message = event.body.message;
+            this.articles = event.body;
+            this.router.navigate(['app-results-page']);
+
+            this.apiService.passDatatoResultsPage(this.articles);
+            this.spinner.hide();
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.progress = 0;
+
+          if (err.error && err.error.message) {
+            this.message = err.error.message;
+          } else {
+            this.message = 'Could not upload the file!';
+          }
+
+          this.currentFile = undefined;
+        },
+      });
+    }
   }
 
   generateReportIfJar(f: NgForm): void {
