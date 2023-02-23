@@ -134,7 +134,7 @@ console.log(this.technology)
 
   //testEditedData
   public resendSelectedItems(selectedRowstoSend:Array<any>){  //Results Page Generate Report button
-    const req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=graphql`, selectedRowstoSend, {
+    const req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, selectedRowstoSend, {
       reportProgress: true,
       responseType: 'json'
     });
