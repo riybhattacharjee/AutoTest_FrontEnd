@@ -16,15 +16,16 @@ export class ApiServiceService {
   constructor(private httpClient: HttpClient,
     ) {
 this.technology=localStorage.getItem('technology');
+console.log(this.technology)
     }
 
   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
     console.log("get results with file")
-    if(localStorage.getItem("technology")=='Open Spec API'){
+    if(localStorage.getItem("technology")=='open-api-specification'){
  this.url =this.ngrokUrl+`/api/openApi/java/generate-report-from-url?apiUrl=`;
     }
     else{
-      if(localStorage.getItem("technology")=='GraphQL'){
+      if(localStorage.getItem("technology")=='graphql'){
         this.url =this.ngrokUrl+`/api/graphql/apiTest=`;
       }
     }
@@ -43,7 +44,7 @@ this.technology=localStorage.getItem('technology');
 
 
   getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
-    if(localStorage.getItem("technology")=='Open Spec API'){
+    if(localStorage.getItem("technology")=='open-api-specification'){
  this.url =this.ngrokUrl+`/api/openApi/java/urlWithFile?apiUrl=`;
     }
     else{
@@ -67,7 +68,7 @@ this.technology=localStorage.getItem('technology');
 
   getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report without any file
     console.log("called")
-    if(localStorage.getItem("technology")=='Open Spec API'){
+    if(localStorage.getItem("technology")=='open-api-specification'){
  this.url =`/api/openApi/java/urlWithFile?apiUrl`;
     }
     else{
@@ -92,7 +93,7 @@ this.technology=localStorage.getItem('technology');
   getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
     console.log("getResultsForApiOnlyWithoutFile")
     if(localStorage.getItem("technology")=='open-api-specification'){
- //this.url =`/api/openApi/java/urlWithFile?apiUrl=`;
+ this.url =`/api/autotest/generate-api-details?baseUrl=`;
     }
     else{
       if(localStorage.getItem("technology")=='graphql'){
