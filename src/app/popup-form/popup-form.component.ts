@@ -13,4 +13,8 @@ export class PopupFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  send() {
+    console.log("Send email logic");
+  }
+
 }

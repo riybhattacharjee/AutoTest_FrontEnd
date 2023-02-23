@@ -1,5 +1,13 @@
-<mat-dialog-actions align="end">
-  <input type='text'> Email id
-    <button mat-dialog-close>Close</button>
-    <!-- <button (click)="close()">Close</button> -->
-  </mat-dialog-actions>
+<mat-dialog-actions>
+  <label>Enter email id(s)</label><br />
+  <input
+    type="email"
+    multiple
+    style="width: 100%; height: 25px; padding: 5px"
+    placeholder="Separate emails by comma"
+  />
+  <br /><br /><br /><br />
+  <button class="btn btn-primary" (click)="send()">Send</button> &nbsp;
+  <button class="btn btn-danger" mat-dialog-close>Close</button>
+  <!-- <button (click)="close()">Close</button> -->
+</mat-dialog-actions>
