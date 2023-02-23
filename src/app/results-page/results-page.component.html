@@ -53,16 +53,24 @@
   ><button
     class="btn btn-primary"
     (click)="regenerateReport()"
-    style="margin-left: 10px; width: auto; margin-top: 14px"
+    id="resultPageBtn"
   >
     Generate Report</button
   ><!-- Button to clear selection --><button
     (click)="duplicateRowsSelected()"
     class="btn btn-primary"
-    style="margin-left: 10px; margin-top: 14px"
+    id="resultPageBtn"
     
   >
     Duplicate Rows Selected
+  </button>
+
+  <button
+    (click)="sendEmail()"
+    class="btn btn-primary"
+    id="resultPageBtn"
+  >
+    Send Email
   </button>
 </div>
 <div style="height: 50px; width: 100%"></div>
@@ -97,3 +105,20 @@
   (gridReady)="onGridReady($event)"
   (cellClicked)="onCellClicked($event)"
 ></ag-grid-angular>
+
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(mymodal)">Open My Modal</button>   -->
+     
+<ng-template #mymodal let-modal>  
+  <div class="modal-header">  
+    <h4 class="modal-title" id="modal-basic-title">Bootstrap Modal</h4>  
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">  
+      <span aria-hidden="true">?</span>  
+    </button>  
+  </div>  
+  <div class="modal-body">  
+    This is example from Javatpoint.com  
+  </div>  
+  <div class="modal-footer">  
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>  
+  </div>  
+</ng-template>  

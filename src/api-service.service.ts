@@ -9,19 +9,23 @@ export class ApiServiceService {
   url:string|undefined;
   jsonResponseList:Array<any> | undefined;
   name: any=null;
-  ngrokUrl='https://0595-2401-4900-1f24-4187-c159-ad49-c83c-18d2.in.ngrok.io';
+  technology:any;
+  ngrokUrl='https://8051-2401-4900-1f24-4187-c159-ad49-c83c-18d2.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
-    ) {}
+    ) {
+this.technology=localStorage.getItem('technology');
+    }
 
-  getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> {
+  getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
+    console.log("get results with file")
     if(localStorage.getItem("technology")=='Open Spec API'){
- this.url =this.ngrokUrl+`/openApi/java/urlWithFile?apiUrl=`;
+ this.url =this.ngrokUrl+`/api/openApi/java/generate-report-from-url?apiUrl=`;
     }
     else{
       if(localStorage.getItem("technology")=='GraphQL'){
-        this.url =this.ngrokUrl+`/graphql/apiTest=`;
+        this.url =this.ngrokUrl+`/api/graphql/apiTest=`;
       }
     }
 
@@ -38,13 +42,13 @@ export class ApiServiceService {
   }
 
 
-  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> {
+  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
     if(localStorage.getItem("technology")=='Open Spec API'){
- this.url =this.ngrokUrl+`/openApi/java/urlWithFile?apiUrl=`;
+ this.url =this.ngrokUrl+`/api/openApi/java/urlWithFile?apiUrl=`;
     }
     else{
       if(localStorage.getItem("technology")=='GraphQL'){
-        this.url =this.ngrokUrl+`/graphql/apiTest=`;
+        this.url =this.ngrokUrl+`/api/graphql/apiTest=`;
       }
     }
 
@@ -61,20 +65,21 @@ export class ApiServiceService {
   }
 
 
-  getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> {
+  getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report without any file
     console.log("called")
     if(localStorage.getItem("technology")=='Open Spec API'){
- this.url =`/openApi/java/urlWithFile?apiUrl`;
+ this.url =`/api/openApi/java/urlWithFile?apiUrl`;
     }
     else{
       if(localStorage.getItem("technology")=='GraphQL'){
-        this.url =`/graphql/apiTest`;
+        //this.url =`/api/graphql/apiTest`;
+        this.url =`/api/autotest/generate-test-results?inputSource=`;
       }
     }
 
     const formData: FormData = new FormData();
     formData.append('baseUrl',baseUrl);
-     const req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData, {
+     const req = new HttpRequest('POST',  this.ngrokUrl+this.url+this.technology, formData, {
       reportProgress: true,
       responseType: 'json'
     }); 
@@ -84,24 +89,23 @@ export class ApiServiceService {
   
   }
 
-  getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> {
+  getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
     console.log("getResultsForApiOnlyWithoutFile")
-    if(localStorage.getItem("technology")=='Open Spec API'){
- //this.url =`/openApi/java/urlWithFile?apiUrl=`;
+    if(localStorage.getItem("technology")=='open-api-specification'){
+ //this.url =`/api/openApi/java/urlWithFile?apiUrl=`;
     }
     else{
-      if(localStorage.getItem("technology")=='GraphQL'){
-        this.url ='/graphql/generateApiDetails?baseUrl=';
+      if(localStorage.getItem("technology")=='graphql'){
+        //this.url ='/api/graphql/generateApiDetails?baseUrl=';
+        this.url='/api/autotest/generate-api-details?baseUrl='
       }
     }
-     const req = new HttpRequest('GET',  this.ngrokUrl+this.url+baseUrl, {
+     const req = new HttpRequest('GET',  this.ngrokUrl+this.url+baseUrl+'&inputSource='+this.technology,{
       reportProgress: true,
       responseType: 'json'
     }); 
     console.log(req)
     return this.httpClient.request(req);
-  
-  
   }
 
   public passDatatoResultsPage(data:any){
@@ -110,7 +114,7 @@ export class ApiServiceService {
 
   public getResultsforGraphQl(api:any){
     return this.httpClient.get(
-      this.ngrokUrl+`/graphql/apiTest?baseUrl=`,api);
+      this.ngrokUrl+`/api/graphql/apiTest?baseUrl=`,api);
   }
 
   
@@ -119,7 +123,7 @@ export class ApiServiceService {
     formData.append('baseUrl',baseUrl)
     formData.append('excelFile', file);
     formData.append('jarFile',jarFile);  
-    const req = new HttpRequest('POST', `http://localhost:8095/openApi/test-jar`, formData, {
+    const req = new HttpRequest('POST', `http://localhost:8095/api/openApi/test-jar`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -128,9 +132,8 @@ export class ApiServiceService {
   }
 
   //testEditedData
-  public resendSelectedItems(selectedRowstoSend:Array<any>){
-console.log(selectedRowstoSend);
-    const req = new HttpRequest('POST', this.ngrokUrl+`/graphql/testEditedData`, selectedRowstoSend, {
+  public resendSelectedItems(selectedRowstoSend:Array<any>){  //Results Page Generate Report button
+    const req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=graphql`, selectedRowstoSend, {
       reportProgress: true,
       responseType: 'json'
     });

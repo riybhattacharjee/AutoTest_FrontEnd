@@ -6,6 +6,8 @@ import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { AgGridAngular } from 'ag-grid-angular';
 import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupFormComponent } from '../popup-form/popup-form.component';
 
 export interface DataSource {
   className: string;
@@ -101,7 +103,8 @@ export class ResultsPageComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private apiService: ApiServiceService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private matDialog: MatDialog
   ) {}
 
   onGridReady(params: GridReadyEvent) {
@@ -187,4 +190,15 @@ export class ResultsPageComponent implements OnInit {
     });
     this.selectedRowstoSend = [];
   }
-}
+
+  sendEmail(){
+    console.log("send email function called")
+
+    this.matDialog.open(PopupFormComponent, {
+      width: '300px',
+      height: '300px',
+    });
+  }
+  }
+
+

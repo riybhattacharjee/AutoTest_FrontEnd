@@ -64,7 +64,9 @@ export class LandingPageComponent implements OnInit {
 
   @ViewChild('f') form: any;
 
-  techs: string[] = ['Open Spec API', 'Jar File', 'GraphQL'];
+  //techs: string[] = ['Open Spec API', 'Jar File', 'GraphQL'];
+
+  techs: string[] = ['open-api-specification', 'Jar File', 'graphql'];
 
   onSubmit(f: NgForm) {
     if (this.form.valid) {
