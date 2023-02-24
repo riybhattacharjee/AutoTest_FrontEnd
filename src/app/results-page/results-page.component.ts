@@ -8,7 +8,8 @@ import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupFormComponent } from '../popup-form/popup-form.component';
-
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 export interface DataSource {
   className: string;
   method: string;
@@ -34,6 +35,8 @@ export interface DataSource {
   providedIn: 'root',
 })
 export class ResultsPageComponent implements OnInit {
+  fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  fileExtension = '.xlsx';
   goBack() {
     this.router.navigate(['app-results-page']);
     this.rowData = this.lastRowData;
@@ -199,6 +202,20 @@ export class ResultsPageComponent implements OnInit {
       height: '300px',
     });
   }
+
+  public exportExcel(): void {
+    const fileName = "ApiTestReport";
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.rowData);
+    const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    this.saveExcelFile(excelBuffer, fileName);
+  }
+
+  private saveExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], {type: this.fileType});
+    FileSaver.saveAs(data, fileName + this.fileExtension);
+  }
+
   }
 
 
