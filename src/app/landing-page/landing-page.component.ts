@@ -82,71 +82,71 @@ export class LandingPageComponent implements OnInit {
     this.selectedFiles = event.target.files;
   }
 
-  generateReport(f: NgForm): void {
-    localStorage.setItem('technology', f.value['technology']);
-    this.progress = 0;
-    this.baseUrl = f.value['apiSpec'];
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
-      if (file) {
-        this.currentFile = file;
-        this.apiService.getResults(this.currentFile, this.baseUrl).subscribe({
-          next: (event: any) => {
-            if (event.type === HttpEventType.UploadProgress) {
-              this.progress = Math.round((100 * event.loaded) / event.total);
-            } else if (event instanceof HttpResponse) {
-              this.message = event.body.message;
-              this.articles = event.body;
-              this.router.navigate(['app-results-page']);
-              this.apiService.passDatatoResultsPage(this.articles);
-              this.spinner.hide();
-            }
-          },
-          error: (err: any) => {
-            console.log(err);
-            this.progress = 0;
+  // generateReport(f: NgForm): void {
+  //   localStorage.setItem('technology', f.value['technology']);
+  //   this.progress = 0;
+  //   this.baseUrl = f.value['apiSpec'];
+  //   if (this.selectedFiles) {
+  //     const file: File | null = this.selectedFiles.item(0);
+  //     if (file) {
+  //       this.currentFile = file;
+  //       this.apiService.getResults(this.currentFile, this.baseUrl).subscribe({
+  //         next: (event: any) => {
+  //           if (event.type === HttpEventType.UploadProgress) {
+  //             this.progress = Math.round((100 * event.loaded) / event.total);
+  //           } else if (event instanceof HttpResponse) {
+  //             this.message = event.body.message;
+  //             this.articles = event.body;
+  //             this.router.navigate(['app-results-page']);
+  //             this.apiService.passDatatoResultsPage(this.articles);
+  //             this.spinner.hide();
+  //           }
+  //         },
+  //         error: (err: any) => {
+  //           console.log(err);
+  //           this.progress = 0;
 
-            if (err.error && err.error.message) {
-              this.message = err.error.message;
-            } else {
-              this.message = 'Could not upload the file!';
-            }
+  //           if (err.error && err.error.message) {
+  //             this.message = err.error.message;
+  //           } else {
+  //             this.message = 'Could not upload the file!';
+  //           }
 
-            this.currentFile = undefined;
-          },
-        });
-      }
-      this.selectedFiles = undefined;
-    } else {
-      this.spinner.show();
-      this.apiService.getResultswithoutFile(this.baseUrl).subscribe({
-        next: (event: any) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.progress = Math.round((100 * event.loaded) / event.total);
-          } else if (event instanceof HttpResponse) {
-            this.message = event.body.message;
-            this.articles = event.body;
-            this.router.navigate(['app-results-page']);
+  //           this.currentFile = undefined;
+  //         },
+  //       });
+  //     }
+  //     this.selectedFiles = undefined;
+  //   } else {
+  //     this.spinner.show();
+  //     this.apiService.getResultswithoutFile(this.baseUrl).subscribe({
+  //       next: (event: any) => {
+  //         if (event.type === HttpEventType.UploadProgress) {
+  //           this.progress = Math.round((100 * event.loaded) / event.total);
+  //         } else if (event instanceof HttpResponse) {
+  //           this.message = event.body.message;
+  //           this.articles = event.body;
+  //           this.router.navigate(['app-results-page']);
 
-            this.apiService.passDatatoResultsPage(this.articles);
-            this.spinner.hide();
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
-          this.progress = 0;
+  //           this.apiService.passDatatoResultsPage(this.articles);
+  //           this.spinner.hide();
+  //         }
+  //       },
+  //       error: (err: any) => {
+  //         console.log(err);
+  //         this.progress = 0;
 
-          if (err.error && err.error.message) {
-            this.message = err.error.message;
-          } else {
-            this.message = 'Could not upload the file!';
-          }
+  //         if (err.error && err.error.message) {
+  //           this.message = err.error.message;
+  //         } else {
+  //           this.message = 'Could not upload the file!';
+  //         }
 
-          this.currentFile = undefined;
-        },
-      });
-    }
-  }
+  //         this.currentFile = undefined;
+  //       },
+  //     });
+  //   }
+  // }
 
   generateApiList(f: NgForm){
     localStorage.setItem('technology', f.value['technology']);
@@ -218,13 +218,15 @@ export class LandingPageComponent implements OnInit {
     this.progress = 0;
     this.baseUrl = f.value['apiSpec'];
     if (this.selectedFiles && this.selectedFilesJar) {
-      const file: File | null = this.selectedFiles.item(0); //excel file
+     // const file: File | null = this.selectedFiles.item(0); //excel file
       const fileJar: File | null = this.selectedFilesJar.item(0); //jar file
-      if (file && fileJar) {
-        this.currentFile = file;
+      //if (file && fileJar) {
+        if (fileJar) {
+       // this.currentFile = file;
         this.currentJar = fileJar;
         this.apiService
-          .upload(this.currentFile, this.baseUrl, this.currentJar)
+          // .upload(this.currentFile, this.baseUrl, this.currentJar)
+          .upload(this.baseUrl, this.currentJar)
           .subscribe({
             next: (event: any) => {
               if (event.type === HttpEventType.UploadProgress) {
@@ -249,13 +251,13 @@ export class LandingPageComponent implements OnInit {
                 this.message = 'Could not upload the file!';
               }
 
-              this.currentFile = undefined;
+             // this.currentFile = undefined;
               this.currentJar = undefined;
             },
           });
       }
       this.selectedFilesJar = undefined;
-      this.selectedFiles = undefined;
+      //this.selectedFiles = undefined;
     }
   }
 }

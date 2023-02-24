@@ -10,7 +10,7 @@ export class ApiServiceService {
   jsonResponseList:Array<any> | undefined;
   name: any=null;
   technology:any;
-  ngrokUrl='https://8051-2401-4900-1f24-4187-c159-ad49-c83c-18d2.in.ngrok.io';
+  ngrokUrl='https://66a8-2409-40f2-30-b407-2089-cca5-66aa-d9bc.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
@@ -19,68 +19,62 @@ this.technology=localStorage.getItem('technology');
 console.log(this.technology)
     }
 
-  getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
-    console.log("get results with file")
-    if(localStorage.getItem("technology")=='open-api-specification'){
- this.url =this.ngrokUrl+`/api/openApi/java/generate-report-from-url?apiUrl=`;
-    }
-    else{
-      if(localStorage.getItem("technology")=='graphql'){
-        this.url =this.ngrokUrl+`/api/graphql/apiTest=`;
-      }
-    }
+//   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
+//     console.log("get results with file")
+//     if(localStorage.getItem("technology")=='open-api-specification'){
+//  this.url =this.ngrokUrl+`/api/openApi/java/generate-report-from-url?apiUrl=`;
+//     }
+//     else{
+//       if(localStorage.getItem("technology")=='graphql'){
+//         this.url =this.ngrokUrl+`/api/graphql/apiTest=`;
+//       }
+//     }
 
+//     const formData: FormData = new FormData();
+//     formData.append('excelFile', file);
+//      const req = new HttpRequest('POST',  this.url+baseUrl, formData, {
+//       reportProgress: true,
+//       responseType: 'json'
+//     }); 
+//     console.log(req)
+//     return this.httpClient.request(req);
+  
+  
+//   }
+
+
+
+// getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report without any file
+//   console.log("called")
+//   if(localStorage.getItem("technology")=='open-api-specification'){
+// this.url =`/api/openApi/java/urlWithFile?apiUrl`;
+//   }
+//   else{
+//     if(localStorage.getItem("technology")=='GraphQL'){
+//       //this.url =`/api/graphql/apiTest`;
+//       this.url =`/api/autotest/generate-test-results?inputSource=`;
+//     }
+//   }
+
+//   const formData: FormData = new FormData();
+//   formData.append('baseUrl',baseUrl);
+//    const req = new HttpRequest('POST',  this.ngrokUrl+this.url+this.technology, formData, {
+//     reportProgress: true,
+//     responseType: 'json'
+//   }); 
+//   console.log(req)
+//   return this.httpClient.request(req);
+
+
+// }
+
+  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api for Jar
+    this.url =`/api/autotest/generate-api-details`;  
     const formData: FormData = new FormData();
-    formData.append('excelFile', file);
-     const req = new HttpRequest('POST',  this.url+baseUrl, formData, {
-      reportProgress: true,
-      responseType: 'json'
-    }); 
-    console.log(req)
-    return this.httpClient.request(req);
-  
-  
-  }
-
-
-  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
-    if(localStorage.getItem("technology")=='open-api-specification'){
- this.url =this.ngrokUrl+`/api/openApi/java/urlWithFile?apiUrl=`;
-    }
-    else{
-      if(localStorage.getItem("technology")=='GraphQL'){
-        this.url =this.ngrokUrl+`/api/graphql/apiTest=`;
-      }
-    }
-
-    const formData: FormData = new FormData();
-    formData.append('excelFile', file);
-     const req = new HttpRequest('POST',  this.url+baseUrl, formData, {
-      reportProgress: true,
-      responseType: 'json'
-    }); 
-    console.log(req)
-    return this.httpClient.request(req);
-  
-  
-  }
-
-
-  getResultswithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report without any file
-    console.log("called")
-    if(localStorage.getItem("technology")=='open-api-specification'){
- this.url =`/api/openApi/java/urlWithFile?apiUrl`;
-    }
-    else{
-      if(localStorage.getItem("technology")=='GraphQL'){
-        //this.url =`/api/graphql/apiTest`;
-        this.url =`/api/autotest/generate-test-results?inputSource=`;
-      }
-    }
-
-    const formData: FormData = new FormData();
-    formData.append('baseUrl',baseUrl);
-     const req = new HttpRequest('POST',  this.ngrokUrl+this.url+this.technology, formData, {
+    formData.append('jarFile', file);
+    formData.append('baseUrl', baseUrl);
+    formData.append('inputSource', this.technology);
+     const req = new HttpRequest('POST',  this.url, formData, {
       reportProgress: true,
       responseType: 'json'
     }); 
@@ -91,21 +85,12 @@ console.log(this.technology)
   }
 
   getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
-    console.log("getResultsForApiOnlyWithoutFile")
-    if(localStorage.getItem("technology")=='open-api-specification'){
- this.url =`/api/autotest/generate-api-details?baseUrl=`;
-    }
-    else{
-      if(localStorage.getItem("technology")=='graphql'){
-        //this.url ='/api/graphql/generateApiDetails?baseUrl=';
-        this.url='/api/autotest/generate-api-details?baseUrl='
-      }
-    }
+    this.url =`/api/autotest/generate-api-details?baseUrl=`;    
+    console.log("getResultsForApiOnlyWithoutFile",this.ngrokUrl+this.url+baseUrl+'&inputSource='+this.technology)
      const req = new HttpRequest('GET',  this.ngrokUrl+this.url+baseUrl+'&inputSource='+this.technology,{
       reportProgress: true,
       responseType: 'json'
     }); 
-    console.log(req)
     return this.httpClient.request(req);
   }
 
@@ -113,22 +98,15 @@ console.log(this.technology)
   this.content.next(data)
   }
 
-  public getResultsforGraphQl(api:any){
-    return this.httpClient.get(
-      this.ngrokUrl+`/api/graphql/apiTest?baseUrl=`,api);
-  }
-
-  
-  upload(file: File,baseUrl:string,jarFile:File): Observable<HttpEvent<any>> {
+  upload(baseUrl:string,jarFile:File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
     formData.append('baseUrl',baseUrl)
-    formData.append('excelFile', file);
+   // formData.append('excelFile', file);
     formData.append('jarFile',jarFile);  
     const req = new HttpRequest('POST', `http://localhost:8095/api/openApi/test-jar`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
-
     return this.httpClient.request(req);
   }
 
@@ -138,7 +116,6 @@ console.log(this.technology)
       reportProgress: true,
       responseType: 'json'
     });
-
     return this.httpClient.request(req);
   }
 }
