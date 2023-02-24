@@ -214,50 +214,50 @@ export class LandingPageComponent implements OnInit {
     }
   }
 
-  generateReportIfJar(f: NgForm): void {
-    this.progress = 0;
-    this.baseUrl = f.value['apiSpec'];
-    if (this.selectedFiles && this.selectedFilesJar) {
-     // const file: File | null = this.selectedFiles.item(0); //excel file
-      const fileJar: File | null = this.selectedFilesJar.item(0); //jar file
-      //if (file && fileJar) {
-        if (fileJar) {
-       // this.currentFile = file;
-        this.currentJar = fileJar;
-        this.apiService
-          // .upload(this.currentFile, this.baseUrl, this.currentJar)
-          .upload(this.baseUrl, this.currentJar)
-          .subscribe({
-            next: (event: any) => {
-              if (event.type === HttpEventType.UploadProgress) {
-                this.progress = Math.round((100 * event.loaded) / event.total);
-              } else if (event instanceof HttpResponse) {
-                this.message = event.body.message;
+  // generateReportIfJar(f: NgForm): void {
+  //   this.progress = 0;
+  //   this.baseUrl = f.value['apiSpec'];
+  //   if (this.selectedFiles && this.selectedFilesJar) {
+  //    // const file: File | null = this.selectedFiles.item(0); //excel file
+  //     const fileJar: File | null = this.selectedFilesJar.item(0); //jar file
+  //     //if (file && fileJar) {
+  //       if (fileJar) {
+  //      // this.currentFile = file;
+  //       this.currentJar = fileJar;
+  //       this.apiService
+  //         // .upload(this.currentFile, this.baseUrl, this.currentJar)
+  //         .upload(this.baseUrl, this.currentJar)
+  //         .subscribe({
+  //           next: (event: any) => {
+  //             if (event.type === HttpEventType.UploadProgress) {
+  //               this.progress = Math.round((100 * event.loaded) / event.total);
+  //             } else if (event instanceof HttpResponse) {
+  //               this.message = event.body.message;
 
-                this.articles = event;
+  //               this.articles = event;
 
-                this.router.navigate(['app-results-page']);
-                this.apiService.passDatatoResultsPage(this.articles['body']);
-                this.spinner.hide();
-              }
-            },
-            error: (err: any) => {
-              console.log(err);
-              this.progress = 0;
+  //               this.router.navigate(['app-results-page']);
+  //               this.apiService.passDatatoResultsPage(this.articles['body']);
+  //               this.spinner.hide();
+  //             }
+  //           },
+  //           error: (err: any) => {
+  //             console.log(err);
+  //             this.progress = 0;
 
-              if (err.error && err.error.message) {
-                this.message = err.error.message;
-              } else {
-                this.message = 'Could not upload the file!';
-              }
+  //             if (err.error && err.error.message) {
+  //               this.message = err.error.message;
+  //             } else {
+  //               this.message = 'Could not upload the file!';
+  //             }
 
-             // this.currentFile = undefined;
-              this.currentJar = undefined;
-            },
-          });
-      }
-      this.selectedFilesJar = undefined;
-      //this.selectedFiles = undefined;
-    }
-  }
+  //            // this.currentFile = undefined;
+  //             this.currentJar = undefined;
+  //           },
+  //         });
+  //     }
+  //     this.selectedFilesJar = undefined;
+  //     //this.selectedFiles = undefined;
+  //   }
+  // }
 }

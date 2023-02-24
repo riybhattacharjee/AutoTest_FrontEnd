@@ -15,11 +15,59 @@ export class ApiServiceService {
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
     ) {
-this.technology=localStorage.getItem('technology');
-localStorage.clear();
     }
 
-//   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
+     //Home Page Generate Api for Jar
+  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> {
+    console.log("get api results for jar")
+    this.technology=localStorage.getItem('technology');
+    this.url =`/api/autotest/generate-api-details`;  
+    const formData: FormData = new FormData();
+    formData.append('jarFile', file);
+    formData.append('baseUrl', baseUrl);
+    formData.append('inputSource', this.technology);
+     const req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
+      reportProgress: true,
+      responseType: 'json'
+    }); 
+    localStorage.clear();
+    return this.httpClient.request(req); 
+  }
+
+  //Home Page Generate Api for open api & graphql
+  getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { 
+    this.technology=localStorage.getItem('technology');
+    console.log("get api results for "+this.technology)
+    this.url =`/api/autotest/generate-api-details`;  
+    const formData: FormData = new FormData();
+    formData.append('baseUrl', baseUrl);
+    formData.append('inputSource', this.technology);
+    const req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
+      reportProgress: true,
+      responseType: 'json'
+    });
+    localStorage.clear();
+    return this.httpClient.request(req);
+  }
+
+  public passDatatoResultsPage(data:any){
+  this.content.next(data)
+  }
+
+  //Results Page Generate Report button
+  public resendSelectedItems(selectedRowstoSend:Array<any>){  
+    this.technology=localStorage.getItem('technology');
+    const req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, selectedRowstoSend, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+    localStorage.clear();
+    return this.httpClient.request(req);
+  }
+
+  //Unused code
+
+  //   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
 //     console.log("get results with file")
 //     if(localStorage.getItem("technology")=='open-api-specification'){
 //  this.url =this.ngrokUrl+`/api/openApi/java/generate-report-from-url?apiUrl=`;
@@ -68,57 +116,25 @@ localStorage.clear();
 
 // }
 
-  getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api for Jar
-    console.log("get api results for jar")
-    this.url =`/api/autotest/generate-api-details`;  
-    const formData: FormData = new FormData();
-    formData.append('jarFile', file);
-    formData.append('baseUrl', baseUrl);
-    formData.append('inputSource', this.technology);
-     const req = new HttpRequest('GET',  this.ngrokUrl+this.url, formData, {
-      reportProgress: true,
-      responseType: 'json'
-    }); 
-    return this.httpClient.request(req);
-  
-  
-  }
 
-  getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
-    // this.url =`/api/autotest/generate-api-details?baseUrl=`;  
-    this.url =`/api/autotest/generate-api-details?baseUrl=`;  
-    // const formData: FormData = new FormData();
-    // formData.append('baseUrl', baseUrl);
-    // formData.append('inputSource', this.technology);  
-     const req = new HttpRequest('GET',  this.ngrokUrl+this.url+baseUrl+'&inputSource='+this.technology,{
-      reportProgress: true,
-      responseType: 'json'
-    }); 
-    return this.httpClient.request(req);
-  }
+//   getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> {
+//     const url = this.ngrokUrl+'/api/autotest/generate-api-details';
+//     let queryParams = new HttpParams();
+//     //queryParams.append('jarFile', file);
+//     queryParams=queryParams.append('baseUrl', baseUrl);
+//     queryParams=queryParams.append('inputSource', this.technology);
+//     return this.httpClient.get<HttpEvent<any>>(url,{params:queryParams});
+// }
 
-  public passDatatoResultsPage(data:any){
-  this.content.next(data)
-  }
-
-  upload(baseUrl:string,jarFile:File): Observable<HttpEvent<any>> {
-    const formData: FormData = new FormData();
-    formData.append('baseUrl',baseUrl)
-   // formData.append('excelFile', file);
-    formData.append('jarFile',jarFile);  
-    const req = new HttpRequest('POST', `http://localhost:8095/api/openApi/test-jar`, formData, {
-      reportProgress: true,
-      responseType: 'json'
-    });
-    return this.httpClient.request(req);
-  }
-
-  //testEditedData
-  public resendSelectedItems(selectedRowstoSend:Array<any>){  //Results Page Generate Report button
-    const req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, selectedRowstoSend, {
-      reportProgress: true,
-      responseType: 'json'
-    });
-    return this.httpClient.request(req);
-  }
+// upload(baseUrl:string,jarFile:File): Observable<HttpEvent<any>> {
+  //   const formData: FormData = new FormData();
+  //   formData.append('baseUrl',baseUrl)
+  //  // formData.append('excelFile', file);
+  //   formData.append('jarFile',jarFile);  
+  //   const req = new HttpRequest('POST', `http://localhost:8095/api/openApi/test-jar`, formData, {
+  //     reportProgress: true,
+  //     responseType: 'json'
+  //   });
+  //   return this.httpClient.request(req);
+  // }
 }
