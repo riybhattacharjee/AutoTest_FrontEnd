@@ -16,7 +16,7 @@ export class ApiServiceService {
   constructor(private httpClient: HttpClient,
     ) {
 this.technology=localStorage.getItem('technology');
-console.log(this.technology)
+localStorage.clear();
     }
 
 //   getResults(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Report
@@ -69,24 +69,27 @@ console.log(this.technology)
 // }
 
   getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api for Jar
+    console.log("get api results for jar")
     this.url =`/api/autotest/generate-api-details`;  
     const formData: FormData = new FormData();
     formData.append('jarFile', file);
     formData.append('baseUrl', baseUrl);
     formData.append('inputSource', this.technology);
-     const req = new HttpRequest('POST',  this.url, formData, {
+     const req = new HttpRequest('GET',  this.ngrokUrl+this.url, formData, {
       reportProgress: true,
       responseType: 'json'
     }); 
-    console.log(req)
     return this.httpClient.request(req);
   
   
   }
 
   getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { //Home Page Generate Api
-    this.url =`/api/autotest/generate-api-details?baseUrl=`;    
-    console.log("getResultsForApiOnlyWithoutFile",this.ngrokUrl+this.url+baseUrl+'&inputSource='+this.technology)
+    // this.url =`/api/autotest/generate-api-details?baseUrl=`;  
+    this.url =`/api/autotest/generate-api-details?baseUrl=`;  
+    // const formData: FormData = new FormData();
+    // formData.append('baseUrl', baseUrl);
+    // formData.append('inputSource', this.technology);  
      const req = new HttpRequest('GET',  this.ngrokUrl+this.url+baseUrl+'&inputSource='+this.technology,{
       reportProgress: true,
       responseType: 'json'

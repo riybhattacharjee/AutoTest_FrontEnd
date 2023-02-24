@@ -31,10 +31,10 @@
         'has-success': apiSpec.valid && (apiSpec.dirty || apiSpec.touched)
       }"
     >
-      <label class="heading" *ngIf="model.technology != 'Jar File'"
+      <label class="heading" *ngIf="model.technology != 'jarFile'"
         >Enter the URL</label
       >
-      <label class="heading" *ngIf="model.technology == 'Jar File'"
+      <label class="heading" *ngIf="model.technology == 'jarFile'"
         >Enter the Base URL</label
       >
       <input
@@ -53,8 +53,8 @@
 
     <br />
 
-    <label class="heading" *ngIf="model.technology == 'Jar File'"
-      >Jar File</label
+    <label class="heading" *ngIf="model.technology == 'jarFile'"
+      >jarFile</label
     >
     &nbsp;&nbsp;
     <input
@@ -65,11 +65,11 @@
       (change)="onFileSelected($event)"
       #fileUpload
       required
-      *ngIf="model.technology == 'Jar File'"
+      *ngIf="model.technology == 'jarFile'"
     />
 
-    <br *ngIf="model.technology == 'Jar File'" /><br
-      *ngIf="model.technology == 'Jar File'"
+    <br *ngIf="model.technology == 'jarFile'" /><br
+      *ngIf="model.technology == 'jarFile'"
     />
 
     <!-- <label class="heading" *ngIf="model.technology != 'graphql'">Api Excel File</label> &nbsp;&nbsp;
@@ -99,7 +99,7 @@
       class="btn btn-primary"
       (click)="generateReport(f)"
       [disabled]="f.invalid"
-      *ngIf="model.technology != 'Jar File' && model.technology != 'graphql'"
+      *ngIf="model.technology != 'jarFile' && model.technology != 'graphql'"
       style="margin-bottom: 15px"
     >
       Generate Report
@@ -109,7 +109,7 @@
       class="btn btn-primary"
       (click)="generateReportIfJar(f)"
       [disabled]="f.invalid"
-      *ngIf="model.technology == 'Jar File'"
+      *ngIf="model.technology == 'jarFile'"
       style="margin-bottom: 15px"
     >
       Generate Report

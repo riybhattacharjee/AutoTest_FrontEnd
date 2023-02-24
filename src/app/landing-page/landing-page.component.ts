@@ -66,7 +66,7 @@ export class LandingPageComponent implements OnInit {
 
   //techs: string[] = ['Open Spec API', 'Jar File', 'GraphQL'];
 
-  techs: string[] = ['open-api-specification', 'Jar File', 'graphql'];
+  techs: string[] = ['open-api-specification', 'jarFile', 'graphql'];
 
   onSubmit(f: NgForm) {
     if (this.form.valid) {
@@ -152,8 +152,8 @@ export class LandingPageComponent implements OnInit {
     localStorage.setItem('technology', f.value['technology']);
     this.progress = 0;
     this.baseUrl = f.value['apiSpec'];
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
+    if (this.selectedFilesJar) {
+      const file: File | null = this.selectedFilesJar.item(0);
       if (file) {
         this.currentFile = file;
         this.apiService.getResultsForApiOnly(this.currentFile, this.baseUrl).subscribe({
