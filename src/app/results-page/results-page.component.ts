@@ -25,6 +25,7 @@ export interface DataSource {
   responsePayload: string;
   apiName: string;
   //potentialParent: any = null;
+  itemsToUpdate:any[];
 }
 
 @Component({
@@ -39,6 +40,7 @@ export class ResultsPageComponent implements OnInit {
   fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   fileExtension = '.xlsx';
   potentialParent: any;
+  itemsToUpdate:any[]=[];
   goBack() {
     this.router.navigate(['app-results-page']);
     this.rowData = this.lastRowData;
@@ -126,6 +128,21 @@ export class ResultsPageComponent implements OnInit {
       this.rowData = data;
     });
   }
+
+  onRowDragEnd(event:any) {
+    //let that=this
+   
+     //this.itemsToUpdate = [];
+     console.log(this.gridApi)
+  
+    // that.gridApi.forEachNodeAfterFilterAndSort(function (rowNode) {
+    //   console.log(rowNode)
+    //   that.itemsToUpdate.push(rowNode.data);
+    // });
+  
+    // this.rowData = this.itemsToUpdate;
+  }
+
   possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,./;'[]=-)(*&^%$#@!~`";
 
   // Example of consuming Grid Event
@@ -156,6 +173,7 @@ export class ResultsPageComponent implements OnInit {
     }
   }
 
+ 
 
   ngOnInit(): void {}
 
