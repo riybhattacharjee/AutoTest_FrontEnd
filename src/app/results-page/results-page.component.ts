@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ApiServiceService } from 'src/api-service.service';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { AgGridAngular } from 'ag-grid-angular';
-import { CellClickedEvent, ColDef, GridReadyEvent } from 'ag-grid-community';
+import { CellClassParams, CellClickedEvent, ColDef, GetDataPath, GetRowIdFunc, GetRowIdParams, GridApi, GridReadyEvent, IRowDragItem, IRowNode, RefreshCellsParams, RowDragEndEvent, RowDragLeaveEvent, RowDragMoveEvent, ValueFormatterParams } from 'ag-grid-community';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupFormComponent } from '../popup-form/popup-form.component';
@@ -24,6 +24,7 @@ export interface DataSource {
   requestParam: string;
   responsePayload: string;
   apiName: string;
+  //potentialParent: any = null;
 }
 
 @Component({
@@ -37,6 +38,7 @@ export interface DataSource {
 export class ResultsPageComponent implements OnInit {
   fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   fileExtension = '.xlsx';
+  potentialParent: any;
   goBack() {
     this.router.navigate(['app-results-page']);
     this.rowData = this.lastRowData;
@@ -45,6 +47,10 @@ export class ResultsPageComponent implements OnInit {
   goToHome() {
     this.router.navigate(['']);
   }
+//trial
+  
+
+//trial end
 
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
@@ -102,6 +108,7 @@ export class ResultsPageComponent implements OnInit {
   count = 0;
   nodes: any;
   technology: any;
+ 
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -110,8 +117,11 @@ export class ResultsPageComponent implements OnInit {
     private matDialog: MatDialog
   ) {}
 
+  private gridApi!: GridApi;
+
   onGridReady(params: GridReadyEvent) {
     this.technology = localStorage.getItem('technology');
+    console.log(this.technology)
     this.apiService.content.subscribe((data) => {
       this.rowData = data;
     });
@@ -216,6 +226,148 @@ export class ResultsPageComponent implements OnInit {
     FileSaver.saveAs(data, fileName + this.fileExtension);
   }
 
-  }
+//   public groupDefaultExpanded = -1;
+
+//   public getDataPath: GetDataPath = (data: any) => {
+//     return data.filePath;
+//   };
+//   public getRowId: GetRowIdFunc = (params: GetRowIdParams) => {
+//     return params.data.id;
+//   };
+
+//   onRowDragMove(event: RowDragMoveEvent) {
+//     setPotentialParentForNode(event.api, event.overNode);
+//   }
+
+//   onRowDragLeave(event: RowDragLeaveEvent) {
+//     // clear node to highlight
+//     setPotentialParentForNode(event.api, null);
+//   }
+
+//   onRowDragEnd(event: RowDragEndEvent) {
+//     if (!this.potentialParent) {
+//       return;
+//     }
+//     var movingData = event.node.data;
+//     // take new parent path from parent, if data is missing, means it's the root node,
+//     // which has no data.
+//     var newParentPath = this.potentialParent.data
+//       ? this.potentialParent.data.filePath
+//       : [];
+//     var needToChangeParent = !arePathsEqual(newParentPath, movingData.filePath);
+//     // check we are not moving a folder into a child folder
+//     var invalidMode = isSelectionParentOfTarget(event.node, this.potentialParent);
+//     if (invalidMode) {
+//       console.log('invalid move');
+//     }
+//     if (needToChangeParent && !invalidMode) {
+//       var updatedRows: any[] = [];
+//       moveToPath(newParentPath, event.node, updatedRows);
+//       this.gridApi.applyTransaction({
+//         update: updatedRows,
+//       });
+//       this.gridApi.clearFocusedCell();
+//     }
+//     // clear node to highlight
+//     setPotentialParentForNode(event.api, null);
+//   }
+
+//    valueFormatter = function (params: ValueFormatterParams) {
+//     return params.value ? params.value + ' MB' : '';
+//   };
+//    cellClassRules = {
+//     'hover-over': (params: CellClassParams) => {
+//       return params.node === this.potentialParent;
+//     },
+//   };
+    
+//    moveToPath(
+//     newParentPath: string[],
+//     node: IRowNode,
+//     allUpdatedNodes: any[]
+//   ) {
+//     // last part of the file path is the file name
+//     var oldPath = node.data.filePath;
+//     var fileName = oldPath[oldPath.length - 1];
+//     var newChildPath = newParentPath.slice();
+//     newChildPath.push(fileName);
+//     node.data.filePath = newChildPath;
+//     allUpdatedNodes.push(node.data);
+//     if (node.childrenAfterGroup) {
+//       node.childrenAfterGroup.forEach(function (childNode) {
+//         moveToPath(newChildPath, childNode, allUpdatedNodes);
+//       });
+//     }
+//   }
+//   function isSelectionParentOfTarget(selectedNode: IRowNode, targetNode: any) {
+//     var children = selectedNode.childrenAfterGroup || [];
+//     for (var i = 0; i < children.length; i++) {
+//       if (targetNode && children[i].key === targetNode.key) return true;
+//       isSelectionParentOfTarget(children[i], targetNode);
+//     }
+//     return false;
+//   }
+//   function arePathsEqual(path1: string[], path2: string[]) {
+//     if (path1.length !== path2.length) {
+//       return false;
+//     }
+//     var equal = true;
+//     path1.forEach(function (item, index) {
+//       if (path2[index] !== item) {
+//         equal = false;
+//       }
+//     });
+//     return equal;
+//   }
+//   function setPotentialParentForNode(
+//     api: GridApi,
+//     overNode: IRowNode | undefined | null
+//   ) {
+//     var newPotentialParent;
+//     if (overNode) {
+//       newPotentialParent =
+//         overNode.data.type === 'folder'
+//           ? // if over a folder, we take the immediate row
+//             overNode
+//           : // if over a file, we take the parent row (which will be a folder)
+//             overNode.parent;
+//     } else {
+//       newPotentialParent = null;
+//     }
+//     var alreadySelected = potentialParent === newPotentialParent;
+//     if (alreadySelected) {
+//       return;
+//     }
+//     // we refresh the previous selection (if it exists) to clear
+//     // the highlighted and then the new selection.
+//     var rowsToRefresh = [];
+//     if (potentialParent) {
+//       rowsToRefresh.push(potentialParent);
+//     }
+//     if (newPotentialParent) {
+//       rowsToRefresh.push(newPotentialParent);
+//     }
+//     potentialParent = newPotentialParent;
+//     refreshRows(api, rowsToRefresh);
+//   }
+//   function refreshRows(api: GridApi, rowsToRefresh: IRowNode[]) {
+//     var params: RefreshCellsParams = {
+//       // refresh these rows only.
+//       rowNodes: rowsToRefresh,
+//       // because the grid does change detection, the refresh
+//       // will not happen because the underlying value has not
+//       // changed. to get around this, we force the refresh,
+//       // which skips change detection.
+//       force: true,
+//     };
+//     api.refreshCells(params);
+//   }
+
+  
 
 
+// function moveToPath(newChildPath: string[], childNode: IRowNode<any>, allUpdatedNodes: any[]) {
+//   throw new Error('Function not implemented.');
+// }
+
+}

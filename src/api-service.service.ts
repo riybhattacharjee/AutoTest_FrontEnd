@@ -10,7 +10,7 @@ export class ApiServiceService {
   jsonResponseList:Array<any> | undefined;
   name: any=null;
   technology:any;
-  ngrokUrl='https://66a8-2409-40f2-30-b407-2089-cca5-66aa-d9bc.in.ngrok.io';
+  ngrokUrl='https://6480-2401-4900-1cbd-e3d7-b448-6d69-79ee-1996.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
   constructor(private httpClient: HttpClient,
@@ -30,7 +30,7 @@ export class ApiServiceService {
       reportProgress: true,
       responseType: 'json'
     }); 
-    localStorage.clear();
+    
     return this.httpClient.request(req); 
   }
 
@@ -46,7 +46,7 @@ export class ApiServiceService {
       reportProgress: true,
       responseType: 'json'
     });
-    localStorage.clear();
+   
     return this.httpClient.request(req);
   }
 
@@ -61,7 +61,7 @@ export class ApiServiceService {
       reportProgress: true,
       responseType: 'json'
     });
-    localStorage.clear();
+   
     return this.httpClient.request(req);
   }
 

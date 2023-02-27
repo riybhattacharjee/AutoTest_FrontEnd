@@ -58,6 +58,7 @@ export class LandingPageComponent implements OnInit {
 
   states!: Observable<object>;
   ngOnInit(): void {
+    localStorage.clear();
   }
 
   model: Model = new Model('', '');
@@ -150,6 +151,7 @@ export class LandingPageComponent implements OnInit {
 
   generateApiList(f: NgForm){
     localStorage.setItem('technology', f.value['technology']);
+    console.log(localStorage.getItem("technology"))
     this.progress = 0;
     this.baseUrl = f.value['apiSpec'];
     if (this.selectedFilesJar) {

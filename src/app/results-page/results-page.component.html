@@ -85,7 +85,7 @@
 
 <!-- AG Grid Angular Component -->
 <ag-grid-angular
-  *ngIf="technology == 'GraphQL'"
+  *ngIf="technology == 'graphql'"
   style="width: 100%; height: 80%; margin-top: 20px"
   class="ag-theme-alpine"
   [columnDefs]="columnDefsforGraphQl"
@@ -93,14 +93,13 @@
   [rowDragManaged]="true"
   [rowData]="rowData"
   [rowSelection]="'multiple'"
-  
   [animateRows]="true"
   (gridReady)="onGridReady($event)"
   (cellClicked)="onCellClicked($event)"
 ></ag-grid-angular>
 
 <ag-grid-angular
-  *ngIf="technology != 'GraphQL'"
+  *ngIf="technology != 'graphql'"
   style="width: 100%; height: 80%; margin-top: 20px"
   class="ag-theme-alpine"
   [columnDefs]="columnDefs"
@@ -108,7 +107,6 @@
   [rowDragManaged]="true"
   [rowData]="rowData"
   [rowSelection]="'multiple'"
-  
   [animateRows]="true"
   (gridReady)="onGridReady($event)"
   (cellClicked)="onCellClicked($event)"
