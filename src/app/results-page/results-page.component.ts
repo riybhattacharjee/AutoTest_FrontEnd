@@ -40,7 +40,6 @@ export class ResultsPageComponent implements OnInit {
   fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   fileExtension = '.xlsx';
   potentialParent: any;
-  itemsToUpdate:any[]=[];
   goBack() {
     this.router.navigate(['app-results-page']);
     this.rowData = this.lastRowData;
@@ -130,10 +129,12 @@ export class ResultsPageComponent implements OnInit {
   }
 
   onRowDragEnd(event:any) {
-    //let that=this
+    let itemsToUpdate: any[] = []
    
-     //this.itemsToUpdate = [];
-     console.log(this.gridApi)
+    const updatedRows = this.agGrid.api.getModel().forEachNode((rowNode, index) =>{
+      itemsToUpdate.push(rowNode.data)
+    })
+    this.rowData = itemsToUpdate
   
     // that.gridApi.forEachNodeAfterFilterAndSort(function (rowNode) {
     //   console.log(rowNode)
