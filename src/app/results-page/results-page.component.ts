@@ -1,5 +1,5 @@
 import { NONE_TYPE } from '@angular/compiler';
-import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injectable, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiServiceService } from 'src/api-service.service';
 import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupFormComponent } from '../popup-form/popup-form.component';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { Subscription } from 'rxjs/internal/Subscription'; 
+
 export interface DataSource {
   className: string;
   method: string;
@@ -36,6 +38,10 @@ export interface DataSource {
   providedIn: 'root',
 })
 export class ResultsPageComponent implements OnInit {
+  // @Output() newItemEvent = new EventEmitter<string>();
+   
+  @Input() childProperty = ''; 
+
   fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
   fileExtension = '.xlsx';
   potentialParent: any;
@@ -47,6 +53,8 @@ export class ResultsPageComponent implements OnInit {
   goToHome() {
     this.router.navigate(['']);
   }
+
+  
 
   // Each Column Definition results in one Column.
   public columnDefs: ColDef[] = [
@@ -110,8 +118,11 @@ export class ResultsPageComponent implements OnInit {
     private router: Router,
     private apiService: ApiServiceService,
     private spinner: NgxSpinnerService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    
   ) {}
+
+    
 
   private gridApi!: GridApi;
 
@@ -121,6 +132,7 @@ export class ResultsPageComponent implements OnInit {
     this.apiService.content.subscribe((data) => {
       this.rowData = data;
     });
+    
   }
 
   onRowDragEnd(event:any) {
@@ -164,7 +176,46 @@ export class ResultsPageComponent implements OnInit {
 
  
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.apiService.subsVar==undefined) {  
+      console.log("inside ngonit")  
+      this.apiService.subsVar = this.apiService.    
+      invokeFirstComponentFunction.subscribe((email:string) => {  
+        console.log("inside ngonit 2")    
+        this.callSendEmailApi(email);    
+      });    
+    } 
+  }
+
+  callSendEmailApi(email:string){
+console.log(email)
+console.log(this.rowData)
+
+this.apiService.emailApi(email,this.rowData).subscribe({
+  next: (event: any) => {
+    if (event.type === HttpEventType.UploadProgress) {
+      this.progress = Math.round((100 * event.loaded) / event.total);
+    } else if (event instanceof HttpResponse) {
+      this.message = event.body.message;
+      this.articles = event;
+     // this.rowData = this.articles['body'];
+      //this.router.navigate(['app-results-page']);
+      //this.apiService.passDatatoResultsPage(this.articles['body']);
+      //this.spinner.hide();
+    }
+  },
+  error: (err: any) => {
+    console.log(err);
+    this.progress = 0;
+
+    if (err.error && err.error.message) {
+      this.message = err.error.message;
+    } else {
+      this.message = 'Could not upload the file!';
+    }
+  },
+});
+}
 
   regenerateReport() {
     this.spinner.show();
@@ -212,8 +263,8 @@ export class ResultsPageComponent implements OnInit {
   }
 
   sendEmail(){
+   // this.apiService.onFirstComponentButtonClick();    
     console.log("send email function called")
-
     this.matDialog.open(PopupFormComponent, {
       width: '300px',
       height: '300px',

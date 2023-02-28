@@ -1,7 +1,9 @@
 import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription'; 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,11 +12,20 @@ export class ApiServiceService {
   jsonResponseList:Array<any> | undefined;
   name: any=null;
   technology:any;
-  ngrokUrl='https://6480-2401-4900-1cbd-e3d7-b448-6d69-79ee-1996.in.ngrok.io';
+  ngrokUrl='https://1023-2401-4900-1cbd-ffa9-6154-12f6-3300-8178.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
+
+  invokeFirstComponentFunction = new EventEmitter();    
+  subsVar: Subscription | undefined;   
+
   constructor(private httpClient: HttpClient,
     ) {
+    }
+
+    onFirstComponentButtonClick(email:string) {    
+      this.invokeFirstComponentFunction.emit(email); 
+      console.log(email)   
     }
 
      //Home Page Generate Api for Jar
@@ -63,6 +74,10 @@ export class ApiServiceService {
     });
    
     return this.httpClient.request(req);
+  }
+
+  public emailApi(emailId:string,data:Array<any>){
+    return this.httpClient.post(this.ngrokUrl+`/api/autotest/sendReportToMail`, {emailId: emailId, data: data})
   }
 
   //Unused code

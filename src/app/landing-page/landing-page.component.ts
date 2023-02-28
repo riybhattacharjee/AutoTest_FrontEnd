@@ -61,7 +61,7 @@ export class LandingPageComponent implements OnInit {
     localStorage.clear();
   }
 
-  model: Model = new Model('', '');
+  model: Model = new Model('', '','');
 
   @ViewChild('f') form: any;
 

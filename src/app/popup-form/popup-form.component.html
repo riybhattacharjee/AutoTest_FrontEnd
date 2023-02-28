@@ -1,13 +1,19 @@
 <mat-dialog-actions>
   <label>Enter email id(s)</label><br />
+  <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
   <input
     type="email"
     multiple
+    name="email"
     style="width: 100%; height: 25px; padding: 5px"
     placeholder="Separate emails by comma"
+    [(ngModel)]="model.email"
+    #email="ngModel"
   />
-  <br /><br /><br /><br />
-  <button class="btn btn-primary" (click)="send()">Send</button> &nbsp;
+
+  <br/><br /><br /><br />
+  <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="send(f)">Send</button> &nbsp;
   <button class="btn btn-danger" mat-dialog-close>Close</button>
+</form>
   <!-- <button (click)="close()">Close</button> -->
 </mat-dialog-actions>
