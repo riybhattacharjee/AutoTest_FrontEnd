@@ -86,7 +86,7 @@
 
     <label class="heading" *ngIf="enableAuthParameters">Enter the Api token</label>
     <input type="text" class="form-control" name="apiToken" [(ngModel)]="model.apiToken" required #apiToken="ngModel" *ngIf="enableAuthParameters"/>
-
+<br *ngIf="enableAuthParameters"><br *ngIf="enableAuthParameters">
     <button type="submit" class="btn btn-primary" (click)="generateApiList(f)" [disabled]="f.invalid"
       style="margin-bottom: 15px;    margin-left: -7px;">
       Generate Api List
