@@ -188,8 +188,8 @@ export class ResultsPageComponent implements OnInit {
   }
 
   callSendEmailApi(email:string){
-console.log(email)
-console.log(this.rowData)
+console.log(email.split('@')[1])
+
 
 this.apiService.emailApi(email,this.rowData).subscribe({
   next: (event: any) => {
@@ -198,16 +198,11 @@ this.apiService.emailApi(email,this.rowData).subscribe({
     } else if (event instanceof HttpResponse) {
       this.message = event.body.message;
       this.articles = event;
-     // this.rowData = this.articles['body'];
-      //this.router.navigate(['app-results-page']);
-      //this.apiService.passDatatoResultsPage(this.articles['body']);
-      //this.spinner.hide();
     }
   },
   error: (err: any) => {
     console.log(err);
     this.progress = 0;
-
     if (err.error && err.error.message) {
       this.message = err.error.message;
     } else {

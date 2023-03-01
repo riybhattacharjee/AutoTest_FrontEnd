@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ApiServiceService } from 'src/api-service.service';
 import { Model } from 'src/model';
@@ -12,32 +12,30 @@ import { Model } from 'src/model';
 })
 export class PopupFormComponent implements OnInit {
 
-  
-  
+  submitted = false;
+  registerForm!: FormGroup;
 
   constructor(private matDialogRef: MatDialogRef<PopupFormComponent> , private apiService:ApiServiceService) { }
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {  
   }
+
+emailValidFlag:boolean=false;
 
   @ViewChild('f') form: any;
 
-  // firstComponentFunction(email:string){    
-  //   this.apiService.onFirstComponentButtonClick(email);    
-  // } 
   
   send(f:NgForm) {
-    console.log("Send email logic");
-    console.log(f.value['email'])
-    this.apiService.onFirstComponentButtonClick(f.value['email']);    
+    if(f.value['email'].split('@')[1]=='deloitte.com'){
+      this.apiService.onFirstComponentButtonClick(f.value['email']);    
+    }
+    else{
+      alert('invalid email id')
+    }  
   }
 
   onSubmit(f: NgForm) {
-    console.log(f.value['email'])
-    if (this.form.valid) {
-      //this.spinner.show();
-    }
+   f.reset()
   }
 
   model: Model = new Model('', '','');

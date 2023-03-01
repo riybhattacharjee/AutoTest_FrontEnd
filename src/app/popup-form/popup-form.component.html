@@ -1,7 +1,7 @@
 <mat-dialog-actions>
   <label>Enter email id(s)</label><br />
   <form novalidate (ngSubmit)="onSubmit(f)" #f="ngForm">
-  <input
+ <input
     type="email"
     multiple
     name="email"
@@ -9,11 +9,14 @@
     placeholder="Separate emails by comma"
     [(ngModel)]="model.email"
     #email="ngModel"
-  />
+    required
+  /> 
+ 
 
   <br/><br /><br /><br />
-  <button type="submit" class="btn btn-primary" [disabled]="f.invalid" (click)="send(f)">Send</button> &nbsp;
+  <button type="submit" class="btn btn-primary" [disabled]="emailValidFlag" (click)="send(f)">Send</button> &nbsp;
   <button class="btn btn-danger" mat-dialog-close>Close</button>
 </form>
+
   <!-- <button (click)="close()">Close</button> -->
 </mat-dialog-actions>
