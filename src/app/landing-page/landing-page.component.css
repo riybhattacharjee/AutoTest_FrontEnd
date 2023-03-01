@@ -25,4 +25,16 @@
    
   }
 
+  .example-margin {
+    margin: 0 12px;
+  }
+
+  #authCheckbox{
+    margin-left: -19px;
+    font-weight: bold;
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    color: black;
+  }
+
   

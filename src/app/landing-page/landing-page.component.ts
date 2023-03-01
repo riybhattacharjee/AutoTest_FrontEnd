@@ -47,7 +47,7 @@ export class LandingPageComponent implements OnInit {
   fileInfos?: Observable<any>;
   baseUrl: string = '';
   tech: string = '';
-  //generateApiFlag:string='1';
+  enableAuthParameters:boolean=false;
 
   constructor(
     private router: Router,
@@ -61,7 +61,7 @@ export class LandingPageComponent implements OnInit {
     localStorage.clear();
   }
 
-  model: Model = new Model('', '','');
+  model: Model = new Model('', '','','','',false);
 
   @ViewChild('f') form: any;
 
@@ -213,6 +213,16 @@ export class LandingPageComponent implements OnInit {
           this.currentFile = undefined;
         },
       });
+    }
+  }
+
+
+  authRequired(f:NgForm){
+    if(f.value['itsChecked']){
+      this.enableAuthParameters=true;
+    }
+    else{
+      this.enableAuthParameters=false;
     }
   }
 
