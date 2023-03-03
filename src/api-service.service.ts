@@ -12,6 +12,9 @@ export class ApiServiceService {
   jsonResponseList:Array<any> | undefined;
   name: any=null;
   technology:any;
+  apikey:any;
+  apitokenVal:any;
+  req:any;
   ngrokUrl='https://1023-2401-4900-1cbd-ffa9-6154-12f6-3300-8178.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
@@ -37,12 +40,25 @@ export class ApiServiceService {
     formData.append('jarFile', file);
     formData.append('baseUrl', baseUrl);
     formData.append('inputSource', this.technology);
-     const req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
+    console.log(localStorage.getItem('enableAuthParametersVal'))
+    if(localStorage.getItem('enableAuthParametersVal')=='true'){ //when auth token checkbox enabled
+      this.apikey=localStorage.getItem('apiKey')
+      this.apitokenVal=localStorage.getItem('apiToken')
+      formData.append('authTokenKey', this.apikey);
+      formData.append('authTokenValue', this.apitokenVal);
+      this.req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
+        reportProgress: true,
+        responseType: 'json'
+      }); 
+    }
+    else{
+     this.req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
       reportProgress: true,
       responseType: 'json'
     }); 
-    
-    return this.httpClient.request(req); 
+  }
+    console.log(this.req)
+    return this.httpClient.request(this.req); 
   }
 
   //Home Page Generate Api for open api & graphql
@@ -53,12 +69,24 @@ export class ApiServiceService {
     const formData: FormData = new FormData();
     formData.append('baseUrl', baseUrl);
     formData.append('inputSource', this.technology);
-    const req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
+    if(localStorage.getItem('enableAuthParametersVal')=='true'){ //when auth token checkbox enabled
+      this.apikey=localStorage.getItem('apiKey')
+      this.apitokenVal=localStorage.getItem('apiToken')
+      formData.append('authTokenKey', this.apikey);
+      formData.append('authTokenValue', this.apitokenVal);
+      this.req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
+        reportProgress: true,
+        responseType: 'json'
+      }); 
+    }
+    else{
+     this.req = new HttpRequest('POST',  this.ngrokUrl+this.url, formData,{
       reportProgress: true,
       responseType: 'json'
-    });
-   
-    return this.httpClient.request(req);
+    }); 
+  }
+    console.log(this.req)
+    return this.httpClient.request(this.req); 
   }
 
   public passDatatoResultsPage(data:any){
@@ -68,12 +96,25 @@ export class ApiServiceService {
   //Results Page Generate Report button
   public resendSelectedItems(selectedRowstoSend:Array<any>){  
     this.technology=localStorage.getItem('technology');
-    const req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, selectedRowstoSend, {
+    const formData: FormData = new FormData();
+    //formData.append('jsonResponseList', selectedRowstoSend);
+    if(localStorage.getItem('enableAuthParametersVal')=='true'){ //when auth token checkbox enabled
+      this.apikey=localStorage.getItem('apiKey')
+      this.apitokenVal=localStorage.getItem('apiToken')
+      formData.append('authTokenKey', this.apikey);
+      formData.append('authTokenValue', this.apitokenVal);
+    this.req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, {authTokenKey:this.apikey,authTokenValue:this.apitokenVal,jsonResponseList:selectedRowstoSend}, {
       reportProgress: true,
       responseType: 'json'
     });
-   
-    return this.httpClient.request(req);
+  }
+  else{
+    this.req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, selectedRowstoSend, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+  }
+    return this.httpClient.request(this.req);
   }
 
   public emailApi(emailId:string,data:Array<any>){

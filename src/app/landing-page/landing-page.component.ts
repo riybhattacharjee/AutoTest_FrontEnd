@@ -48,6 +48,7 @@ export class LandingPageComponent implements OnInit {
   baseUrl: string = '';
   tech: string = '';
   enableAuthParameters:boolean=false;
+  enableAuthParametersVal:any;
 
   constructor(
     private router: Router,
@@ -150,6 +151,10 @@ export class LandingPageComponent implements OnInit {
   // }
 
   generateApiList(f: NgForm){
+    this.enableAuthParametersVal=this.enableAuthParameters;
+    localStorage.setItem('enableAuthParametersVal',this.enableAuthParametersVal);
+    localStorage.setItem('apiKey',f.value['apiKey']);
+    localStorage.setItem('apiToken',f.value['apiToken']);
     localStorage.setItem('technology', f.value['technology']);
     console.log(localStorage.getItem("technology"))
     this.progress = 0;
