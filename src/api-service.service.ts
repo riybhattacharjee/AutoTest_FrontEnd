@@ -109,7 +109,8 @@ export class ApiServiceService {
     });
   }
   else{
-    this.req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, selectedRowstoSend, {
+    console.log("in else")
+    this.req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, {jsonResponseList:selectedRowstoSend}, {
       reportProgress: true,
       responseType: 'json'
     });
