@@ -156,7 +156,6 @@ export class LandingPageComponent implements OnInit {
     localStorage.setItem('apiKey',f.value['apiKey']);
     localStorage.setItem('apiToken',f.value['apiToken']);
     localStorage.setItem('technology', f.value['technology']);
-    console.log(localStorage.getItem("technology"))
     this.progress = 0;
     this.baseUrl = f.value['apiSpec'];
     if (this.selectedFilesJar) {

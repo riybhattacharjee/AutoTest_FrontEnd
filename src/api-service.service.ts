@@ -15,7 +15,7 @@ export class ApiServiceService {
   apikey:any;
   apitokenVal:any;
   req:any;
-  ngrokUrl='https://1023-2401-4900-1cbd-ffa9-6154-12f6-3300-8178.in.ngrok.io';
+  ngrokUrl='https://0d42-2401-4900-1cbd-aee7-98fd-3e97-e6e5-4e62.in.ngrok.io';
   public content = new BehaviorSubject<any>(this.name);  
   public share = this.content.asObservable();
 
@@ -27,20 +27,17 @@ export class ApiServiceService {
     }
 
     onFirstComponentButtonClick(email:string) {    
-      this.invokeFirstComponentFunction.emit(email); 
-      console.log(email)   
+      this.invokeFirstComponentFunction.emit(email);  
     }
 
      //Home Page Generate Api for Jar
   getResultsForApiOnly(file: File,baseUrl:string): Observable<HttpEvent<any>> {
-    console.log("get api results for jar")
     this.technology=localStorage.getItem('technology');
     this.url =`/api/autotest/generate-api-details`;  
     const formData: FormData = new FormData();
     formData.append('jarFile', file);
     formData.append('baseUrl', baseUrl);
     formData.append('inputSource', this.technology);
-    console.log(localStorage.getItem('enableAuthParametersVal'))
     if(localStorage.getItem('enableAuthParametersVal')=='true'){ //when auth token checkbox enabled
       this.apikey=localStorage.getItem('apiKey')
       this.apitokenVal=localStorage.getItem('apiToken')
@@ -57,14 +54,12 @@ export class ApiServiceService {
       responseType: 'json'
     }); 
   }
-    console.log(this.req)
     return this.httpClient.request(this.req); 
   }
 
   //Home Page Generate Api for open api & graphql
   getResultsForApiOnlyWithoutFile(baseUrl:string): Observable<HttpEvent<any>> { 
     this.technology=localStorage.getItem('technology');
-    console.log("get api results for "+this.technology)
     this.url =`/api/autotest/generate-api-details`;  
     const formData: FormData = new FormData();
     formData.append('baseUrl', baseUrl);
@@ -85,7 +80,6 @@ export class ApiServiceService {
       responseType: 'json'
     }); 
   }
-    console.log(this.req)
     return this.httpClient.request(this.req); 
   }
 
@@ -109,7 +103,6 @@ export class ApiServiceService {
     });
   }
   else{
-    console.log("in else")
     this.req = new HttpRequest('POST', this.ngrokUrl+`/api/autotest/generate-test-results?inputSource=`+this.technology, {jsonResponseList:selectedRowstoSend}, {
       reportProgress: true,
       responseType: 'json'

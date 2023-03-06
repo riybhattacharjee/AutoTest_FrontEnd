@@ -128,7 +128,6 @@ export class ResultsPageComponent implements OnInit {
 
   onGridReady(params: GridReadyEvent) {
     this.technology = localStorage.getItem('technology');
-    console.log(this.technology)
     this.apiService.content.subscribe((data) => {
       this.rowData = data;
     });
@@ -178,19 +177,14 @@ export class ResultsPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.apiService.subsVar==undefined) {  
-      console.log("inside ngonit")  
       this.apiService.subsVar = this.apiService.    
-      invokeFirstComponentFunction.subscribe((email:string) => {  
-        console.log("inside ngonit 2")    
+      invokeFirstComponentFunction.subscribe((email:string) => {   
         this.callSendEmailApi(email);    
       });    
     } 
   }
 
   callSendEmailApi(email:string){
-console.log(email.split('@')[1])
-
-
 this.apiService.emailApi(email,this.rowData).subscribe({
   next: (event: any) => {
     if (event.type === HttpEventType.UploadProgress) {
@@ -258,8 +252,6 @@ this.apiService.emailApi(email,this.rowData).subscribe({
   }
 
   sendEmail(){
-   // this.apiService.onFirstComponentButtonClick();    
-    console.log("send email function called")
     this.matDialog.open(PopupFormComponent, {
       width: '300px',
       height: '300px',
